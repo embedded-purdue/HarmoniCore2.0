@@ -4,18 +4,17 @@ from scipy.signal import butter, lfilter, fftconvolve
 from scipy.signal import hilbert
 import soundfile as sf
 from scipy.signal import fftconvolve
+import csv
 
 def load_audio(path, sr=44100):
     y, sr = librosa.load(path, sr=sr, mono=True)
     return y, sr
-
 
 def save_audio(path, y, sr):
     if np.max(np.abs(y)) > 0:
         y = y / np.max(np.abs(y))
     
     sf.write(path, y, sr)
-
 
 #Distortion / Overdrive
 def distortion(y, amount=100):
@@ -30,8 +29,6 @@ def vocoder_robot(y, sr, carrier_freq=500):
     amplitude_envelope = np.abs(analytic)
 
     return amplitude_envelope * carrier
-
-
 
 # Shimmer Reverb (Reverb + Octave Up)
 def shimmer_reverb(y, sr, decay=0.5):
@@ -66,7 +63,6 @@ def chorus(y, sr, depth_ms=15, rate=0.3):
             y_out[i] = (y[i] + y[idx]) * 0.5
 
     return y_out
-
 
 # Ring Modulation (robot/alien tremolo)
 def ring_mod(y, sr, freq=30):
@@ -124,19 +120,85 @@ def vibrato(x, sr, depth=0.0003, rate=5.0): #Mess with params
         frac = idx - i0
         y[i] = (1 - frac) * x[i0] + frac * x[i1]
 
-    return y
+    return y, delay
 
+def vibrato_hw(x, sr, rate_hz=5.0, depth_ms=5.0,base_delay_ms=5.0):
+    n = len(x)
 
+    # constants
+    max_delay = int((base_delay_ms + depth_ms) * sr / 1000) # 441 maximum number of past samples we need | delay = base_delay +- depth
+    base_delay = base_delay_ms * sr / 1000 # 0.005
+    depth = depth_ms * sr / 1000 # 220.5
+
+    # Delay buffer (RAM-based FIFO buffer))
+    delay_buf = np.zeros(max_delay + 2) # 443
+    buf_len = len(delay_buf) # 443
+    wr_ptr = 0
+
+    # Phase accumulator (NCO) (constant)
+    phase = 0.0
+    phase_inc = 2 * np.pi * rate_hz / sr # 0.0007124
+
+    y = np.zeros_like(x)
+    temp_delay = np.zeros_like(x)
+
+    # random access into past samples to create vibrato effect
+    for i in range(n):
+        delay_buf[wr_ptr] = x[i]
+
+        # LFO
+        lfo = np.sin(phase)
+        phase += phase_inc
+        if phase > 2 * np.pi:
+            phase -= 2 * np.pi
+
+        # Time-varying delay
+        delay = base_delay + depth * lfo # 220.505 const coeff * lfo
+
+        # Read pointer
+        rd_ptr = wr_ptr - delay # jumps all over the place
+        while rd_ptr < 0:
+            rd_ptr += buf_len
+
+        # Linear interpolation if rd_ptr is fractional
+        i0 = int(np.floor(rd_ptr))
+        i1 = (i0 + 1) % buf_len
+        frac = rd_ptr - i0
+        y[i] = (1 - frac) * delay_buf[i0] + frac * delay_buf[i1]
+        # y[i] = 0.5 * delay_buf[i0] + 0.5 * delay_buf[i1]
+
+        # Increment write pointer
+        wr_ptr = (wr_ptr + 1) % buf_len # this one always moves forward then wraps for new sample
+
+        # add delay amount to array
+        temp_delay[i] = delay
+
+    return y, temp_delay
 
 # ----------------------------------------------------
 # Example pipeline
 # ----------------------------------------------------
 if __name__ == '__main__':
-    y, sr = load_audio("./wav/nothingonyou.wav")
+    #y, sr = load_audio("wav/original/nothingonyou.wav")
+    y, sr = load_audio("wav/original/teenagefever.wav")
 
-    y_out = harmonic_chorus(y, sr)
-    y_out = echo(y_out, sr)
-    y_out = reverb(y_out, sr)
-    y_out = vibrato(y, sr)
+    y_out, delay_ref = vibrato(y, sr, depth=0.0004, rate=3.0)
+    y_out2, delay_hw = vibrato_hw(y, sr, rate_hz=3.0, depth_ms=4.0, base_delay_ms=4.0)
 
-    save_audio("out.wav", y_out, sr)
+    filename = "compare_vibrato.csv"
+    with open(filename, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["sample", "delay_ref_samples", "delay_hw_samples", "difference"])
+
+        for i in range(len(delay_ref)):
+            writer.writerow([
+                i,
+                delay_ref[i],
+                delay_hw[i],
+                delay_hw[i] - delay_ref[i]
+            ])
+
+
+    # save_audio("vibrato2.wav", y_out, sr)
+    # save_audio("vibrato_hw2.wav", y_out2, sr)
+    # print("Saved audio to all effects files")
