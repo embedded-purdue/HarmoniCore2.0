@@ -5,7 +5,7 @@
 
 package types;
     parameter SR = 44100;
-    parameter DW = 18; //idk
+    parameter DW = 18;
 
 endpackage
 

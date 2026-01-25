@@ -10,8 +10,8 @@ module fifowrapper_tb;
     logic clk1 = 1, clk2 = 1, nRST;
 
     // clock
-    always #(PERIOD/6) clk1++; // clk1 slower
-    always #(PERIOD/2) clk2++; // clk2 faster 
+    always #(PERIOD/6) clk1 = ~clk1; // clk1 slower
+    always #(PERIOD/2) clk2 = ~clk2; // clk2 faster 
 
     fifowrapper_if fifoif();
 
@@ -33,19 +33,16 @@ program test (
 );
 
     task sendWrite (input logic [DW-1:0] data);
-        begin
-            fifoif.wr_data = data;
-            fifoif.wr_en = 1'b1;
-            fifoif.rd_en = 1'b0;
-            @(negedge clk1);
-        end
+        fifoif.wr_data = data;
+        fifoif.wr_en   = 1'b1;
+        @(posedge clk1);
+        fifoif.wr_en   = 1'b0;
     endtask
 
     task readWhenFull ();
-        begin
-            fifoif.rd_en = 1'b1;
-            @(negedge clk2);
-        end
+        fifoif.rd_en = 1'b1;
+        @(posedge clk2);
+        fifoif.rd_en = 1'b0;
     endtask
 
     string test_name;
@@ -53,9 +50,11 @@ program test (
     initial begin
 
         nRST = 1'b1;
-        repeat (2) @(negedge clk);
+        repeat (2) @(negedge clk1);
+        repeat (2) @(negedge clk2);
         nRST = 1'b0;
-        repeat (2) @(negedge clk);
+        repeat (2) @(negedge clk1);
+        repeat (2) @(negedge clk2);
         
         // ************************************************************************
         // Test Case 1: Fill up FIFO
@@ -88,7 +87,7 @@ program test (
             else $display ("Incorrect empty value ERROR");
         @(negedge clk2);
 
-        repeat (15) @(negedge clk);
+        repeat (15) @(negedge clk1);
         $finish;
 
     end

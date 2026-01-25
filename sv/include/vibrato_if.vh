@@ -1,19 +1,19 @@
 
-`ifndef VIBRATO_IF_VH
-`define VIBRATO_IF_VH
+// `ifndef VIBRATO_IF_VH
+// `define VIBRATO_IF_VH
 
-`include "../include/types.sv"
+// `include "../include/types.sv"
 
-interface vibrato_if;
-    import types::*;
+// interface vibrato_if;
+//     import types::*;
 
-    modport vibrato (
+//     modport vibrato (
 
-    );
+//     );
 
-    modport vibrato_tb (
+//     modport vibrato_tb (
 
-    );
-endinterface
+//     );
+// endinterface
 
-`endif
+// `endif
