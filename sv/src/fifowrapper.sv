@@ -25,4 +25,7 @@ import types::*;
         .rd_rst_busy(rd_rst_busy)   // output wire rd_rst_busy
     );
 
+    assign fifoif.can_read = ~rd_rst_busy;
+    assign fifoif.can_write = ~wr_rst_busy;
+
 endmodule

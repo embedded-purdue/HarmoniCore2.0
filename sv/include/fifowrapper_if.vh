@@ -10,16 +10,16 @@ import types::*;
 interface fifowrapper_if;
 
     logic [DW-1:0] wr_data, rd_data;
-    logic wr_en, rd_en, full, empty;
+    logic wr_en, rd_en, full, empty, can_read, can_write;
 
     modport fifo (
         input wr_data, wr_en, rd_en,
-        output rd_data, full, empty
+        output rd_data, full, empty, can_read, can_write
     );
 
     modport fifo_tb (
-        output rd_data, full, empty,
-        input wr_data, wr_en, rd_en
+        input rd_data, full, empty, can_read, can_write,
+        output wr_data, wr_en, rd_en
     );
     
 endinterface
