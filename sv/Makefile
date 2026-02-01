@@ -12,12 +12,16 @@ clean:
 	-@cmd /C "for /D %%G in (vivado_pid*) do rmdir /S /Q %%G >nul 2>&1"
 
 %.sim:
-	xvlog ./HarmoniCore2.0.gen/sources_1/ip/blk_mem/simulation/blk_mem_gen_v8_4.v
-	xvlog ./HarmoniCore2.0.gen/sources_1/ip/blk_mem/sim/blk_mem.v
+# 	xvlog ./HarmoniCore2.0.gen/sources_1/ip/blk_mem/simulation/blk_mem_gen_v8_4.v
+# 	xvlog ./HarmoniCore2.0.gen/sources_1/ip/blk_mem/sim/blk_mem.v
 
-	xvlog ./HarmoniCore2.0.gen/sources_1/ip/fifo/simulation/fifo_generator_vlog_beh.v
-	xvlog ./HarmoniCore2.0.gen/sources_1/ip/fifo/sim/fifo.v
+# 	xvlog ./HarmoniCore2.0.gen/sources_1/ip/fifo/simulation/fifo_generator_vlog_beh.v
+# 	xvlog ./HarmoniCore2.0.gen/sources_1/ip/fifo/sim/fifo.v
 
+# fifo_echo
+	xvlog ./HarmoniCore2.0.gen/sources_1/ip/fifo_echo/simulation/fifo_generator_vlog_beh.v
+	xvlog ./HarmoniCore2.0.gen/sources_1/ip/fifo_echo/sim/fifo_echo.v
+	
 	for %%f in (src\*.sv) do xvlog -sv %%f
 	xvlog -sv ./tb/$*_tb.sv
 

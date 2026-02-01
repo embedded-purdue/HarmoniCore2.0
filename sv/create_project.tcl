@@ -110,6 +110,23 @@ set_property -dict {
 generate_target all [get_ips fifo]
 ##################################################################
 
+##################################################################
+# CREATE IP fifo_echo
+##################################################################
+
+set fifo_echo [create_ip -name fifo_generator -vendor xilinx.com -library ip -version 13.2 -module_name fifo_echo]
+
+# User Parameters
+set_property CONFIG.Input_Depth {16384} [get_ips fifo_echo]
+
+# Runtime Parameters
+set_property -dict { 
+  GENERATE_SYNTH_CHECKPOINT {1}
+} $fifo
+
+generate_target all [get_ips fifo_echo]
+##################################################################
+
 add_files constraints.xdc
 set_property FILE_TYPE XDC [get_files constraints.xdc]
 set_property top AFC [current_fileset] 
