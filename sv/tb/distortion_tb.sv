@@ -36,7 +36,7 @@ module distortion_tb ();
     task run_test(input logic [17:0] test_input);
     begin
         y_in = test_input;
-        repeat (8) @(posedge clk);  // Wait for pipelinelatency
+        @(posedge clk);
         $display("Input: %d, Output: %d", test_input, out);
     end
     endtask
