@@ -12,6 +12,8 @@ module distortion_tb ();
 
     //outputs
     logic [17:0] out;
+    logic [17:0] test_mult; // TEST MULTIPLIER OUTPUT
+    logic [17:0] test_add;  // TEST ADDRESS OUTPUT
 
     distortion DUT (.*);
 
@@ -34,8 +36,8 @@ module distortion_tb ();
     task run_test(input logic [17:0] test_input);
     begin
         y_in = test_input;
-        @(posedge clk);
-        output_result(test_input, out);
+        repeat (8) @(posedge clk);  // Wait for pipelinelatency
+        $display("Input: %d, Output: %d", test_input, out);
     end
     endtask
 
@@ -72,6 +74,10 @@ module distortion_tb ();
         run_test(-18'd200);  // expected: -tanh(4.0) = ~-0.999 (clipped)
         run_test(-18'd1000); // expected: -tanh(4.0) = ~-0.999 (clipped)
         run_test(-18'd5000); // expected: -tanh(4.0) = ~-0.999 (clipped)
+
+        y_in = 18'd0; // Reset input to zero
+
+        repeat (5) @(posedge clk);
 
         // Finish simulation
         $finish;
