@@ -1,8 +1,8 @@
 import numpy as np
 
 # Parameters
-N = 1024  # Number of entries
-XMAX = 4.0  # Maximum input value (corresponds to address 1023)
+N = 128  # Number of LUT entries (reduced from 1024 for smaller memory footprint)
+XMAX = 4.0  # Maximum input value (corresponds to address 127)
 Q_FORMAT = 11  # Q11 format (12-bit signed: 1 sign bit + 11 fractional bits)
 
 # Generate lookup table
@@ -24,7 +24,7 @@ tanh_unsigned = np.where(tanh_fixed < 0, tanh_fixed + 2**12, tanh_fixed)
 # Write COE file
 with open('../source/tanh_lut.coe', 'w') as f:
     f.write("; Tanh Lookup Table for Distortion Effect\n")
-    f.write("; 1024 entries, 12-bit values, Q11 format\n")
+    f.write("; 128 entries, 12-bit values, Q11 format\n")
     f.write("; Maps input 0 to 4.0 -> tanh(x)\n")
     f.write("memory_initialization_radix=16;\n")
     f.write("memory_initialization_vector=\n")
@@ -38,6 +38,6 @@ with open('../source/tanh_lut.coe', 'w') as f:
 print(f"Generated tanh_lut.coe with {N} entries")
 print(f"Sample values:")
 print(f"  tanh(0.0) = {tanh_values[0]:.6f} -> {tanh_fixed[0]}")
-print(f"  tanh(1.0) = {tanh_values[256]:.6f} -> {tanh_fixed[256]}")
-print(f"  tanh(2.0) = {tanh_values[512]:.6f} -> {tanh_fixed[512]}")
-print(f"  tanh(4.0) = {tanh_values[1023]:.6f} -> {tanh_fixed[1023]}")
+print(f"  tanh(1.0) = {tanh_values[32]:.6f} -> {tanh_fixed[32]}")
+print(f"  tanh(2.0) = {tanh_values[64]:.6f} -> {tanh_fixed[64]}")
+print(f"  tanh(4.0) = {tanh_values[127]:.6f} -> {tanh_fixed[127]}")

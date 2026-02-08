@@ -1,7 +1,7 @@
 module distortion #(
-    parameter XMAX = 4,
-    parameter N = 1024,
-    parameter K = 100
+    parameter XMAX = 4,     // Maximum input value (clips at ±4.0)
+    parameter N = 128,      // LUT size: 128 entries
+    parameter K = 100       // Gain multiplier for distortion amount
 )(
     // Inputs
     input logic clk,
@@ -18,7 +18,7 @@ logic [17:0] mag, mag_clip, d_out, N_new;
 logic [35:0] mult_out, pre_addr;
 logic sign;
 logic [2:0] sign_pipe;  // 3-stage pipeline for sign
-logic [9:0] addr; 
+logic [6:0] addr;       // 7-bit address for 128-entry LUT
 logic [17:0] out_reg;
 
 mult_gen_0 U1(
@@ -44,7 +44,7 @@ mult_gen_0 U2(
 );
 
 always_comb begin
-    addr = pre_addr[22:13]; // addr = (mag_clip * 1023) / 8192, where 8192 = 2^13
+    addr = pre_addr[19:13]; // addr = (mag_clip * 127) / 8192, extract 7 bits
     test_add = addr;
 end
 
