@@ -88,6 +88,44 @@ set_property -dict {
 generate_target all [get_ips shift_reg]
 ##################################################################
 
+##################################################################
+# CREATE IP blk_mem_gen_0 (tanh LUT)
+##################################################################
+
+set blk_mem_gen_0 [create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name blk_mem_gen_0]
+
+# User Parameters
+set_property -dict [list \
+  CONFIG.Coe_File {../source/tanh_lut.coe} \
+  CONFIG.Enable_A {Always_Enabled} \
+  CONFIG.Load_Init_File {true} \
+  CONFIG.Memory_Type {Single_Port_ROM} \
+  CONFIG.Write_Depth_A {128} \
+  CONFIG.Write_Width_A {18} \
+] [get_ips blk_mem_gen_0]
+
+# Runtime Parameters
+set_property -dict { 
+  GENERATE_SYNTH_CHECKPOINT {1}
+} $blk_mem_gen_0
+
+generate_target all [get_ips blk_mem_gen_0]
+##################################################################
+
+##################################################################
+# CREATE IP mult_gen_0
+##################################################################
+
+set mult_gen_0 [create_ip -name mult_gen -vendor xilinx.com -library ip -version 12.0 -module_name mult_gen_0]
+
+# Runtime Parameters
+set_property -dict { 
+  GENERATE_SYNTH_CHECKPOINT {1}
+} $mult_gen_0
+
+generate_target all [get_ips mult_gen_0]
+##################################################################
+
 add_files constraints.xdc
 set_property FILE_TYPE XDC [get_files constraints.xdc]
 set_property top AFC [current_fileset] 
