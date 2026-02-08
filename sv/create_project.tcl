@@ -25,26 +25,24 @@ set_property CONFIG.Implementation_Options radix_2_burst_io [get_ips fft_core]
 generate_target all [get_ips fft_core]
 
 ##################################################################
-# CREATE IP div
+# CREATE IP fifo
 ##################################################################
 
-set div [create_ip -name div_gen -vendor xilinx.com -library ip -version 5.1 -module_name div]
+set fifo [create_ip -name fifo_generator -vendor xilinx.com -library ip -version 13.2 -module_name fifo_generator_0]
 
 # User Parameters
 set_property -dict [list \
-  CONFIG.ARESETN {true} \
-  CONFIG.dividend_and_quotient_width {29} \
-  CONFIG.divisor_width {18} \
-  CONFIG.fractional_width {18} \
-  CONFIG.latency {33} \
-] [get_ips div]
+  CONFIG.Fifo_Implementation {Independent_Clocks_Block_RAM} \
+  CONFIG.Input_Depth {64} \
+  CONFIG.Valid_Flag {true} \
+] [get_ips fifo]
 
 # Runtime Parameters
 set_property -dict { 
   GENERATE_SYNTH_CHECKPOINT {1}
-} $div
+} $fifo_generator_0
 
-generate_target all [get_ips div]
+generate_target all [get_ips fifo]
 ##################################################################
 
 ##################################################################
@@ -88,26 +86,6 @@ set_property -dict {
 } $shift_reg
 
 generate_target all [get_ips shift_reg]
-##################################################################
-
-##################################################################
-# CREATE IP fifo
-##################################################################
-
-set fifo [create_ip -name fifo_generator -vendor xilinx.com -library ip -version 13.2 -module_name fifo]
-
-# User Parameters
-set_property -dict [list \
-  CONFIG.Fifo_Implementation {Independent_Clocks_Block_RAM} \
-  CONFIG.Input_Depth {512} \
-] [get_ips fifo]
-
-# Runtime Parameters
-set_property -dict { 
-  GENERATE_SYNTH_CHECKPOINT {1}
-} $fifo
-
-generate_target all [get_ips fifo]
 ##################################################################
 
 add_files constraints.xdc
