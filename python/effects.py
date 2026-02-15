@@ -18,6 +18,7 @@ def ring_mod(y, sr, freq=10):
     osc = np.sin(2 * np.pi * freq * t)
     return y * osc
 
+# Ring Modulation - Frame-Based + Hardware-Conscious
 def ring_mod_hw(frames, sr, freq=10):
     frame_length = frames.shape[0]
     num_frames = frames.shape[1]
@@ -45,6 +46,7 @@ def ring_mod_hw(frames, sr, freq=10):
 
     return y_out
 
+# Ring Modulation - Actual Hardware
 phase = 0.0
 phase_inc = 13.65625 # 10 Hz at 44100 Hz sample rate
 def ring_mod_pure_hardware(sample):

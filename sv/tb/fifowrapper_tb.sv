@@ -67,9 +67,11 @@ program test (
             @(negedge clk1);
         end
 
-        for (i = 0; i < 511; i++) begin // NOTE: async FIFO must keep one spot empty for full/empty calculations, so if 512 depth, we can only store 511 values
+        for (i = 0; i < 15; i++) begin // NOTE: async FIFO must keep one spot empty for full/empty calculations, so if 512 depth, we can only store 511 values
             sendWrite(18'h1000 + i);
         end
+        fifoif.wr_data = '0;
+        fifoif.wr_en = 1'b0;
 
         assert (fifoif.full == 1'b1) $display ("Correct full value");
             else $display ("Incorrect full value ERROR");
@@ -85,11 +87,12 @@ program test (
             @(negedge clk2);
         end
 
-        for (i = 0; i < 511; i++) begin
+        for (i = 0; i < 15; i++) begin
             readFIFO();
             assert (fifoif.rd_data == (18'h1000 + i)) $display ("Correct data value read");
                 else $display ("Incorrect data value read ERROR");
         end
+        fifoif.rd_en = 1'b0;
 
         assert (fifoif.empty == 1'b1) $display ("Correct empty value");
             else $display ("Incorrect empty value ERROR");

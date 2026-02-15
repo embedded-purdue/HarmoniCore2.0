@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="20.903 ns"></ZoomEndTime>
-      <Cursor1Time time="1.707 ns"></Cursor1Time>
+      <ZoomStartTime time="139.401 ns"></ZoomStartTime>
+      <ZoomEndTime time="224.302 ns"></ZoomEndTime>
+      <Cursor1Time time="143.401 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="340"></NameColumnWidth>
-      <ValueColumnWidth column_width="91"></ValueColumnWidth>
+      <ValueColumnWidth column_width="87"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="13" />
+   <WVObjectSize size="14" />
    <wvobject fp_name="/fifowrapper_tb/clk1" type="logic">
       <obj_property name="ElementShortName">clk1</obj_property>
       <obj_property name="ObjectShortName">clk1</obj_property>
@@ -55,6 +55,10 @@
    <wvobject fp_name="/fifowrapper_tb/fifoif/rd_data" type="array">
       <obj_property name="ElementShortName">rd_data[17:0]</obj_property>
       <obj_property name="ObjectShortName">rd_data[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fifowrapper_tb/fifoif/valid" type="logic">
+      <obj_property name="ElementShortName">valid</obj_property>
+      <obj_property name="ObjectShortName">valid</obj_property>
    </wvobject>
    <wvobject fp_name="/fifowrapper_tb/fifoif/full" type="logic">
       <obj_property name="ElementShortName">full</obj_property>
