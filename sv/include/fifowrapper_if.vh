@@ -12,7 +12,7 @@ interface fifowrapper_if;
     logic [DW-1:0] wr_data, rd_data;
     logic wr_en, rd_en, full, empty, valid, can_read, can_write;
 
-    modport fifo (
+    modport fifo_inst (
         input wr_data, wr_en, rd_en,
         output rd_data, full, empty, valid, can_read, can_write
     );
