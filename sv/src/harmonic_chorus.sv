@@ -6,32 +6,52 @@ module harmonic_chorus #(
     input logic clk,
     input logic n_rst,
     input logic [17:0] y_in, 
+    input logic sample_en,
+    input logic [$clog2(N)-1:0] delay,
+    input logic [17:0] DELAY_MS,
+    input logic [17:0] AMOUNT,
+    input logic [17:0] sr,
 
     // Output
     output logic [17:0] out     
 );
 
-logic idx = 0;
+logic [$clog2(N)-1:0]idx = 0;
 logic [35:0] mult_out, depth, add1, add2, result;
-logic [17:0] state, y_out, out1, out2, output;
-logic amount;
+logic [17:0] state [0:N-1];
+logic [17:0] y_out, out1, out2, mix_out;
+logic [17:0] amount;
+logic [$clog2(N)-1:0] r_idx;
+logic [17:0] delayed;
+logic [17:0] harm;
 
-mult_gen_0 U1(sr, DELAY_MS, clk, mult_out);
+mult_gen_0 U1 (
+    .CLK(clk),
+    .A(sr),
+    .B(DELAY_MS),
+    .P(mult_out)
+);
 
 assign depth = (mult_out + 36'd512) >> 10;
 
 
 // <for loop>
-always @(posedge clk) begin
-    if (rst)
+always @(posedge clk, negedge n_rst) begin
+    if (~n_rst) begin
         idx <= 0;
-    else if (sample_en)
+    end
+    else if (sample_en) begin
         idx <= idx + 1;
+    end
 end
 
-always @(posedge clk) begin
-    if (sample_en)
+always @(posedge clk, negedge n_rst) begin
+    if (~n_rst) begin
+        idx <= 0;
+    end
+    else if (sample_en) begin
         state[idx] <= y_in;
+    end
 end
 
 always_comb begin
@@ -40,19 +60,21 @@ always_comb begin
     y_out = (y_in + delayed) >>> 1;
 end
 
-distortion #(.XMAX(), .N(), .K(2)) output1 (.clk(), .n_rst(), .y_in(y_out), .out(out1));
-distortion #(.XMAX(), .N(), .K(1)) output2 (.clk(), .n_rst(), .y_in(y_out), .out(out2));
+distortion #(.K(2)) output1 (.clk(clk), .n_rst(n_rst), .y_in(y_out), .out(out1));
+distortion #(.K(1)) output2 (.clk(clk), .n_rst(n_rst), .y_in(y_out), .out(out2));
 
-assign output = (out2) >> 1;
-assign harm = out1 + output;
+assign mix_out = out2 >> 1;
+assign harm = out1 + mix_out;
+
+// AMOUNT complement for mixing (adjust per Q-format if needed)
+assign amount = 18'd1 - AMOUNT;
 
 mult_gen_0 U2(harm, AMOUNT, clk, add1);
-
-assign amount = 1 - AMOUNT;
-
-mult_gen_0 U3(y_out, AMOUNT, clk, add2);
+mult_gen_0 U3(y_out, amount, clk, add2);
 
 assign result = add1 + add2;
 
+// Drive module output (truncate/round as appropriate)
+assign out = result[17:0];
 
 endmodule
