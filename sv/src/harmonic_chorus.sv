@@ -42,14 +42,6 @@ always @(posedge clk, negedge n_rst) begin
     end
     else if (sample_en) begin
         idx <= idx + 1;
-    end
-end
-
-always @(posedge clk, negedge n_rst) begin
-    if (~n_rst) begin
-        idx <= 0;
-    end
-    else if (sample_en) begin
         state[idx] <= y_in;
     end
 end
@@ -69,8 +61,8 @@ assign harm = out1 + mix_out;
 // AMOUNT complement for mixing (adjust per Q-format if needed)
 assign amount = 18'd1 - AMOUNT;
 
-mult_gen_0 U2(harm, AMOUNT, clk, add1);
-mult_gen_0 U3(y_out, amount, clk, add2);
+mult_gen_0 U2(clk, AMOUNT, harm, add1);
+mult_gen_0 U3(clk, amount, y_out, add2);
 
 assign result = add1 + add2;
 
