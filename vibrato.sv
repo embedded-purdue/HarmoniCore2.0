@@ -36,9 +36,9 @@ always_ff @(posedge clk, negedge n_rst) begin
 	if (rst) begin
 		read_ptr = '0;
 	end else if (read_ptr_en == buffer_data) begin
-		wrt_ptr = 0;
+		read_ptr = 0;
 	end else begin
-		wrt_ptr++;
+		read_ptr++;
 	end
 
 end
