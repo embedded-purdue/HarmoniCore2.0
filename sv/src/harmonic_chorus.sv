@@ -33,8 +33,6 @@ mult_gen_0 U1 (
 );
 
 assign depth = (mult_out + 36'd512) >> 10;
-
-
 // <for loop>
 always @(posedge clk, negedge n_rst) begin
     if (~n_rst) begin
