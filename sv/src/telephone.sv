@@ -2,14 +2,10 @@ module telephone
 (
     input logic clk,
     input logic n_rst,
-    input logic [23:0] y_in, 
+    input logic signed [23:0] y_in, 
     input logic sample_en,
-    input logic [$clog2(N)-1:0] delay,
-    input logic [17:0] DELAY_MS,
-    input logic [17:0] AMOUNT,
-    input logic [17:0] sr,
 
-    output logic [23:0] out     
+    output logic signed [23:0] out     
 );
     //2 biquads that implement a 4th-order butterworth bandpass filter centered around ... kHz with a Q of ...
     //Function to implement
@@ -32,8 +28,16 @@ localparam signed [17:0] b2_2 = 18'sd65536;
 localparam signed [17:0] a1_2 = 18'sd-125165; 
 localparam signed [17:0] a2_2 = 18'sd60030;
 
+// Convert signed 24-bit Q1.23 input to signed 18-bit Q1.17 with rounding
+logic signed [23:0] y_s;
+logic signed [23:0] y_r;
 logic signed [17:0] filter_in;
-assign filter_in = y_in[23:6];    //conert the 24-bit input to 18 bits
+logic signed [17:0] filter_out;
+
+//ROUNDING: Add 2^5 (32) to the input before shifting right by 6 to convert from Q1.23 to Q1.17 with rounding
+assign y_s = $signed(y_in);
+assign y_r = (y_s + 24'sd32) >>> 6; // add 2^5 for round-to-nearest then arithmetic shift
+assign filter_in = y_r[17:0];
 
 logic signed [17:0] stage1_to_stage2; // Wire to connect stage 1 to stage 2
 
@@ -67,7 +71,17 @@ biquad #(
     .y_out(filter_out)
 );
 
-assign out = {filter_out, 6'b0}; // Convert back to 24 bits by appending 6 zeros
+// SATURATION: Convert filter output (Q1.17) back to Q1.23 with saturating clamp to avoid wrap 
+always_comb begin
+    logic signed [23:0] expanded;
+    expanded = $signed(filter_out) <<< 6;
+    if (expanded > 24'sd8388607)
+        out = 24'sd8388607;
+    else if (expanded < -24'sd8388608)
+        out = -24'sd8388608;
+    else
+        out = expanded;
+end
 
 endmodule
 
@@ -105,9 +119,7 @@ module biquad #(
         end
     end
 
-    // ==========================================
-    // 2. Multipliers
-    // ==========================================
+    //Multipliers
     // 18-bit (Q1.17) x 18-bit (Q2.16) = 36-bit (Q3.33)
     logic signed [35:0] mult_b0, mult_b1, mult_b2;
     logic signed [35:0] mult_a1, mult_a2;
@@ -119,18 +131,12 @@ module biquad #(
     assign mult_a1 = y_z1 * A1;
     assign mult_a2 = y_z2 * A2;
 
-    // ==========================================
-    // 3. Accumulator
-    // ==========================================
+    // Accumulator
     logic signed [35:0] accumulator;
     
-    // SciPy's DSP math requires you to ADD the feedforward ('b') terms 
-    // and SUBTRACT the feedback ('a') terms.
     assign accumulator = mult_b0 + mult_b1 + mult_b2 - mult_a1 - mult_a2;
 
-    // ==========================================
-    // 4. Output Formatting
-    // ==========================================
+    // Output Formatting
     // Shift right by 16 to chop off the coefficient fractional bits.
     // The 36-bit result cleanly truncates back down to 18-bit Q1.17.
     assign y_out = accumulator >>> 16;
