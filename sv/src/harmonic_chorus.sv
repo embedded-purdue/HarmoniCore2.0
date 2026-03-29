@@ -13,7 +13,7 @@ module harmonic_chorus #(
     input logic [17:0] sr,
 
     // Output
-    output logic [17:0] out     
+    output logic [23:0] out     
 );
 
 logic [$clog2(N)-1:0]idx = 0;
