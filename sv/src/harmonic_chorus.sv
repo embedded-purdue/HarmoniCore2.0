@@ -65,6 +65,6 @@ mult_gen_0 U3(clk, amount, y_out, add2);
 assign result = add1 + add2;
 
 // Drive module output (truncate/round as appropriate)
-assign out = result[17:0];
+    assign out = result[23:0];
 
 endmodule
