@@ -50,6 +50,7 @@ always_comb begin
     y_out = (y_in + delayed) >>> 1;
 end
 
+// need to check if the output of distortion also 1 sign bit and rest magnitude bit
 distortion #(.K(2)) output1 (.clk(clk), .n_rst(n_rst), .y_in(y_out), .out(out1));
 distortion #(.K(1)) output2 (.clk(clk), .n_rst(n_rst), .y_in(y_out), .out(out2));
 
@@ -59,6 +60,7 @@ assign harm = out1 + mix_out;
 // AMOUNT complement for mixing (adjust per Q-format if needed)
 assign amount = 18'd1 - AMOUNT;
 
+    // needs to check harm (continued from distortion), shouldn't be 2's complement for clean calculation)
 mult_gen_0 U2(clk, AMOUNT, harm, add1);
 mult_gen_0 U3(clk, amount, y_out, add2);
 
