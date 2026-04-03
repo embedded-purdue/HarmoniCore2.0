@@ -35,9 +35,9 @@ logic signed [17:0] filter_in;
 logic signed [17:0] filter_out;
 
 //ROUNDING: Add 2^5 (32) to the input before shifting right by 6 to convert from Q1.23 to Q1.17 with rounding
-assign y_s = $signed(y_in);
-assign y_r = (y_s + 24'sd32) >>> 6; // add 2^5 for round-to-nearest then arithmetic shift
-assign filter_in = y_r[17:0];
+// assign y_r = (y_in + 24'sd32) >>> 6; // add 2^5 for round-to-nearest then arithmetic shift
+// assign filter_in = y_r[17:0];
+assign filter_in = y_in[23:6]; // Simple truncation from Q1.23 to Q1.17, no rounding
 
 logic signed [17:0] stage1_to_stage2; // Wire to connect stage 1 to stage 2
 
@@ -72,16 +72,7 @@ biquad #(
 );
 
 // SATURATION: Convert filter output (Q1.17) back to Q1.23 with saturating clamp to avoid wrap 
-always_comb begin
-    logic signed [23:0] expanded;
-    expanded = $signed(filter_out) <<< 6;
-    if (expanded > 24'sd8388607)
-        out = 24'sd8388607;
-    else if (expanded < -24'sd8388608)
-        out = -24'sd8388608;
-    else
-        out = expanded;
-end
+assign out = {filter_out, 6'b000000};
 
 endmodule
 
