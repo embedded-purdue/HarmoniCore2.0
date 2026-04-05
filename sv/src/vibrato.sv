@@ -9,13 +9,13 @@ module vibrato_core #(
     parameter logic signed [PTR_W-1:0] BASE_DELAY_Q = 24'sd2890138,
     parameter logic signed [PTR_W-1:0] DEPTH_Q      = 24'sd1445069
 )(
-    input  logic                        clk,
-    input  logic                        n_rst,
+    input  logic clk,
+    input  logic n_rst,
 
-    input  logic                        data_valid,
+    input  logic data_valid,
     input  logic signed [SAMPLE_W-1:0]  data_in,
 
-    output logic                        out_valid,
+    output logic out_valid,
     output logic signed [SAMPLE_W-1:0]  data_out
 );
 
@@ -49,7 +49,7 @@ module vibrato_core #(
     // Ring mod signals
     // -----------------------------
     logic signed [17:0] ring_mod_out;
-    logic               ring_mod_valid;
+    logic ring_mod_valid;
     logic signed [41:0] delay_mod_mult;   // DEPTH_Q * ring_mod_out
     logic signed [PTR_W-1:0] delay_mod_q;
 
@@ -74,6 +74,9 @@ module vibrato_core #(
     logic signed [SAMPLE_W+FRAC_W:0]   interp_mult;
     logic signed [SAMPLE_W+1:0]        interp_sum;
 
+    logic [0:0] bram_wea;
+    logic [0:0] bram_web;
+
     // -----------------------------
     // Ring mod instantiation
     // For vibrato, sample_in is constant 1.0 in Q1.17
@@ -94,20 +97,25 @@ module vibrato_core #(
     // Port A: write current sample
     // Port B: read i0 / i1 across successive cycles
     // -----------------------------
-    dual_port_bram u_delay_bram (
-        .clka  (clk),
-        .ena   (bram_ena),
-        .wea   (bram_wea),
-        .addra (bram_addra),
-        .dina  (bram_dina),
-        .douta (bram_douta),
 
-        .clkb  (clk),
-        .enb   (bram_enb),
-        .web   (bram_web),
-        .addrb (bram_addrb),
-        .dinb  (bram_dinb),
-        .doutb (bram_doutb)
+    bram_wea = 1'b1;   
+    bram_web = 1'b0;
+
+    blk_mem_gen_0 u_delay_bram (
+    // Port A (WRITE PORT)
+    .clka  (clk),
+    .wea   (bram_wea),
+    .addra (bram_addra),
+    .dina  (bram_dina),
+    .douta (bram_douta),
+
+    // Port B (READ PORT)
+    .clkb  (clk),
+    .enb   (bram_enb),
+    .web   (bram_web),
+    .addrb (bram_addrb),
+    .dinb  (bram_dinb),
+    .doutb (bram_doutb)
     );
 
     // -----------------------------
