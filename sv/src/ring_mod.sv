@@ -7,15 +7,15 @@ module ring_mod #(
     input logic [17:0] sample_in, 
     input logic valid,
 
-    // Output
-    logic [17:0] acc_out,
-    logic [0:0] acc_sign2,
-    logic [0:0] acc_sign1,
-    logic [0:0] acc_sign,
-    logic [17:0] phase,
-    logic [17:0] osc, 
-    logic [17:0] osc_new,
-    logic [35:0] mult_out,
+    // Debug/observation outputs
+    output logic [17:0] acc_out,
+    output logic acc_sign2,
+    output logic acc_sign1,
+    output logic acc_sign,
+    output logic [17:0] phase,
+    output logic [17:0] osc, 
+    output logic [17:0] osc_new,
+    output logic [35:0] mult_out,
     output logic [17:0] out
 );
 
@@ -42,7 +42,6 @@ end
 
 always_ff @(posedge clk, negedge n_rst) begin
     if (~n_rst) begin
-        phase <= 18'b0;
         acc_sign2 <= 1'b0;
         acc_sign1 <= 1'b0;
         acc_sign <= 1'b0;
@@ -53,22 +52,14 @@ always_ff @(posedge clk, negedge n_rst) begin
     end
 end
 
-always_ff @(negedge clk) begin
+always_comb begin
     if (~n_rst) begin
-        phase <= 18'b0;
-        osc_new <= 18'b0;
+        osc_new = 18'b0;
     end else begin
-        if(acc_out[16] == 0) begin
-            phase <= acc_out;
+        if(acc_sign == 1'b1) begin
+            osc_new = ~osc + 18'd1;
         end else begin
-            phase <= 63 - acc_out;
-        end
-
-        if(acc_sign == 1) begin
-            osc_new <= ~osc + 1;
-        end
-        else begin
-            osc_new <= osc;
+            osc_new = osc;
         end
     end
 end

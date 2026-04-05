@@ -1,4 +1,4 @@
-module vibrato_core #(
+module vibrato #(
     parameter int SAMPLE_W = 18,
     parameter int ADDR_W   = 8,
     parameter int FRAC_W   = 15,
@@ -60,7 +60,7 @@ module vibrato_core #(
     // -----------------------------
     logic [ADDR_W-1:0] bram_addra, bram_addrb;
     logic              bram_ena, bram_enb;
-    logic              bram_wea, bram_web;
+    logic [0:0]        bram_wea, bram_web;
     logic signed [SAMPLE_W-1:0] bram_dina, bram_dinb;
     logic signed [SAMPLE_W-1:0] bram_douta, bram_doutb;
 
@@ -73,9 +73,6 @@ module vibrato_core #(
     logic signed [SAMPLE_W:0]          diff;
     logic signed [SAMPLE_W+FRAC_W:0]   interp_mult;
     logic signed [SAMPLE_W+1:0]        interp_sum;
-
-    logic [0:0] bram_wea;
-    logic [0:0] bram_web;
 
     // -----------------------------
     // Ring mod instantiation
@@ -97,10 +94,6 @@ module vibrato_core #(
     // Port A: write current sample
     // Port B: read i0 / i1 across successive cycles
     // -----------------------------
-
-    bram_wea = 1'b1;   
-    bram_web = 1'b0;
-
     blk_mem_gen_0 u_delay_bram (
     // Port A (WRITE PORT)
     .clka  (clk),

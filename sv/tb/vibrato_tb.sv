@@ -24,7 +24,7 @@ module vibrato_tb;
     // -----------------------------------
     // DUT instantiation
     // -----------------------------------
-    vibrato_core uut (
+    vibrato uut (
         .clk        (clk),
         .n_rst      (n_rst),
         .data_valid (data_valid),
@@ -54,6 +54,7 @@ module vibrato_tb;
 
     integer sample_count = 0;
     real t;
+    real val;
     real freq = 440.0; // A4 tone
 
     integer clk_counter = 0;
@@ -70,7 +71,7 @@ module vibrato_tb;
 
                 // Generate sine wave input
                 t = sample_count / real'(SAMPLE_RATE);
-                real val = $sin(2.0 * 3.1415926535 * freq * t);
+                val = $sin(2.0 * 3.1415926535 * freq * t);
 
                 // Convert to Q1.17
                 data_in <= $rtoi(val * (1 << 17));
