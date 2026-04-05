@@ -1,11 +1,6 @@
 module telephone
 (
-    input logic clk,
-    input logic n_rst,
-    input logic signed [23:0] y_in, 
-    input logic sample_en,
-
-    output logic signed [23:0] out     
+    telephone_if.dut iface  
 );
     //2 biquads that implement a 4th-order butterworth bandpass filter centered around ... kHz with a Q of ...
     //Function to implement
@@ -49,9 +44,9 @@ biquad #(
     .A1(a1_1),
     .A2(a2_1)
 ) b1 (
-    .clk(clk),
-    .n_rst(n_rst),
-    .sample_en(sample_en),
+    .clk(iface.clk),
+    .n_rst(iface.n_rst),
+    .sample_en(iface.sample_en),
     .x_in(filter_in),
     .y_out(stage1_to_stage2)
 );
@@ -64,9 +59,9 @@ biquad #(
     .A1(a1_2),
     .A2(a2_2)
 ) b2 (
-    .clk(clk),
-    .n_rst(n_rst),
-    .sample_en(sample_en),
+    .clk(iface.clk),
+    .n_rst(iface.n_rst),
+    .sample_en(iface.sample_en),
     .x_in(stage1_to_stage2),
     .y_out(filter_out)
 );
