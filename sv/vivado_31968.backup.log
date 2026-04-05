@@ -1,0 +1,98 @@
+#-----------------------------------------------------------
+# Vivado v2025.1 (64-bit)
+# SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
+# IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
+# SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
+# Start of session at: Sun Feb 22 14:59:17 2026
+# Process ID         : 31968
+# Current directory  : C:/Users/tejas/Projects/HarmoniCore2.0/sv
+# Command line       : vivado.exe -mode batch -source create_project.tcl
+# Log file           : C:/Users/tejas/Projects/HarmoniCore2.0/sv/vivado.log
+# Journal file       : C:/Users/tejas/Projects/HarmoniCore2.0/sv\vivado.jou
+# Running On         : TW_ThinkpadX1
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 7 155U
+# CPU Frequency      : 2688 MHz
+# CPU Physical cores : 12
+# CPU Logical cores  : 14
+# Host memory        : 33849 MB
+# Swap memory        : 11274 MB
+# Total Virtual      : 45123 MB
+# Available Virtual  : 11959 MB
+#-----------------------------------------------------------
+source create_project.tcl
+# set origin_dir [file normalize [file dirname [info script]]]
+# create_project HarmoniCore2.0 ./ -part xc7a25tcsg325-2 -force
+create_project: Time (s): cpu = 00:00:12 ; elapsed = 00:00:11 . Memory (MB): peak = 491.125 ; gain = 212.562
+# set_property SIMULATOR_LANGUAGE Verilog [current_project]
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/2025.1/Vivado/data/ip'.
+# set fifo [create_ip -name fifo_generator -vendor xilinx.com -library ip -version 13.2 -module_name fifo]
+# set_property -dict [list \
+#   CONFIG.Fifo_Implementation {Independent_Clocks_Block_RAM} \
+#   CONFIG.Input_Depth {16} \
+#   CONFIG.Valid_Flag {true} \
+# ] [get_ips fifo]
+# set_property -dict { 
+#   GENERATE_SYNTH_CHECKPOINT {1}
+# } $fifo
+# generate_target all [get_ips fifo]
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'fifo'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'fifo'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'fifo'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'fifo'...
+# set ring_mod_accum [create_ip -name c_accum -vendor xilinx.com -library ip -version 12.0 -module_name ring_mod_accum]
+# set_property -dict [list \
+#   CONFIG.Input_Type {Unsigned} \
+#   CONFIG.Output_Width {18} \
+# ] [get_ips ring_mod_accum]
+# set_property -dict { 
+#   GENERATE_SYNTH_CHECKPOINT {1}
+# } $ring_mod_accum
+# generate_target all [get_ips ring_mod_accum]
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'ring_mod_accum'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'ring_mod_accum'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'ring_mod_accum'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'ring_mod_accum'...
+# set ring_mod_lut [create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name ring_mod_lut]
+# set coe_file [file normalize "$origin_dir/../source/sin_lut.coe"]
+# set_property -dict [list \
+#   CONFIG.Coe_File $coe_file \
+#   CONFIG.Enable_A {Always_Enabled} \
+#   CONFIG.Load_Init_File {true} \
+#   CONFIG.Memory_Type {Single_Port_ROM} \
+#   CONFIG.Write_Depth_A {64} \
+#   CONFIG.Write_Width_A {18} \
+# ] [get_ips ring_mod_lut]
+INFO: [IP_Flow 19-3484] Absolute path of file 'c:/Users/tejas/Projects/HarmoniCore2.0/source/sin_lut.coe' provided. It will be converted relative to IP Instance files '../../../../../source/sin_lut.coe'
+# set_property -dict { 
+#   GENERATE_SYNTH_CHECKPOINT {1}
+# } $ring_mod_lut
+# generate_target all [get_ips ring_mod_lut]
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'ring_mod_lut'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'ring_mod_lut'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'ring_mod_lut'...
+INFO: [IP_Flow 19-1686] Generating 'Miscellaneous' target for IP 'ring_mod_lut'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'ring_mod_lut'...
+# set ring_mod_mult [create_ip -name mult_gen -vendor xilinx.com -library ip -version 12.0 -module_name ring_mod_mult]
+# set_property -dict { 
+#   GENERATE_SYNTH_CHECKPOINT {1}
+# } $ring_mod_mult
+# generate_target all [get_ips ring_mod_mult]
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'ring_mod_mult'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'ring_mod_mult'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'ring_mod_mult'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'ring_mod_mult'...
+# add_files constraints.xdc
+# set_property FILE_TYPE XDC [get_files constraints.xdc]
+# set_property top AFC [current_fileset] 
+# foreach dir {./include ./src ./tb ./waves} {
+#     if {[file isdirectory $dir]} {
+#         foreach file [glob -nocomplain -directory $dir *] {
+#             add_files $file
+#         }
+#     }
+# }
+INFO: [Common 17-206] Exiting Vivado at Sun Feb 22 14:59:42 2026...
