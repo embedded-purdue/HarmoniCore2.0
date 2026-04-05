@@ -42,19 +42,19 @@ import types::*;
     assign ftdif.dac_bclk = dac_bclk;
     assign dac_data = ftdif.dac_data_out;
 
-    // ---- MMCM instantiation (placeholder) ----
-    // Your MMCM takes fpga_clk (156MHz) and produces:
-    //   - adc_mclk (24.5MHz) → drives ADC
-    //   - dac_mclk (50MHz)   → drives DAC (later)
-    //   - locked signal
-    // For now, just pass through or assign:
-    // assign adc_mclk = mmcm_clk_24m5;
+    // ---- Modules ----
+    // MMCM/PLL
+    logic sys_clk, clk_ready;
+    mmcm u_mmcm (.clk_50(dac_mclk), .clk_24_5(adc_mclk), .clk_156_buf(sys_clk), .reset(~n_rst), .locked(clk_ready), .clk_156_in(fpga_clk));
 
-    adc_to_fpga u_adc (.fpga_clk(fpga_clk), .n_rst(n_rst), .atfif(atfif));
+    // ADC
+    adc_to_fpga u_adc (.fpga_clk(sys_clk), .n_rst(n_rst), .atfif(atfif));
+     
+     // DAC
+    fpga_to_dac u_dac (.fpga_clk(sys_clk), .n_rst(n_rst), .ftdif(ftdif));
 
-    fpga_to_dac u_dac (.fpga_clk(fpga_clk), .n_rst(n_rst), .ftdif(ftdif));
-
-    assign ftdif.audio_data  = atfif.adc_valid ? atfif.adc_data_out : '0;
-    assign ftdif.audio_valid = atfif.adc_valid;
+    // Temp Logic
+    assign ftdif.audio_data  = clk_ready && atfif.adc_valid ? atfif.adc_data_out : '0;
+    assign ftdif.audio_valid = clk_ready && atfif.adc_valid;
 
 endmodule

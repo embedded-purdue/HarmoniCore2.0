@@ -9,11 +9,11 @@ clean:
 %.sim:
 	for %%f in (src\*.sv) do xvlog -sv -i ./include %%f
 	xvlog -sv -i ./include ./tb/$*_tb.sv
-
-
-
 	xelab -debug typical $*_tb -s $*_sim
 	xsim $*_sim -gui -view ./waves/$*_sim.wcfg
+
+%.sim_all:
+	vivado -mode batch -source run_sim.tcl -tclargs $*
 
 synth:
 	vivado -mode batch -source synth.tcl
