@@ -4,8 +4,10 @@
 `define TYPES
 
 package types;
-    parameter SR = 44100;
-    parameter DW = 18;
+    localparam SR = 44100;
+    localparam DW = 24;
+    localparam MULT_DW = 18;
+    localparam DAC_DW = 16;
 
 endpackage
 

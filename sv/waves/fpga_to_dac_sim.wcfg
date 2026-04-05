@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="fpga_to_dac_sim.wdb" id="1">
+         <top_modules>
+            <top_module name="fpga_to_dac_tb" />
+            <top_module name="types" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="440.501 ns"></ZoomEndTime>
+      <Cursor1Time time="0.001 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="337"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="19" />
+   <wvobject fp_name="/fpga_to_dac_tb/DUT/fpga_clk" type="logic">
+      <obj_property name="ElementShortName">fpga_clk</obj_property>
+      <obj_property name="ObjectShortName">fpga_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/DUT/dac_nrst" type="logic">
+      <obj_property name="ElementShortName">dac_nrst</obj_property>
+      <obj_property name="ObjectShortName">dac_nrst</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider18">
+      <obj_property name="label">Inputs</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/PROG/i" type="array">
+      <obj_property name="ElementShortName">i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/ftdif/audio_data" type="array">
+      <obj_property name="ElementShortName">audio_data[23:0]</obj_property>
+      <obj_property name="ObjectShortName">audio_data[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/ftdif/audio_valid" type="logic">
+      <obj_property name="ElementShortName">audio_valid</obj_property>
+      <obj_property name="ObjectShortName">audio_valid</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider21">
+      <obj_property name="label">Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/DUT/ff1" type="array">
+      <obj_property name="ElementShortName">ff1</obj_property>
+      <obj_property name="ObjectShortName">ff1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/DUT/ff2" type="array">
+      <obj_property name="ElementShortName">ff2</obj_property>
+      <obj_property name="ObjectShortName">ff2</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/DUT/ff3" type="array">
+      <obj_property name="ElementShortName">ff3</obj_property>
+      <obj_property name="ObjectShortName">ff3</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/DUT/new_frame" type="logic">
+      <obj_property name="ElementShortName">new_frame</obj_property>
+      <obj_property name="ObjectShortName">new_frame</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/DUT/can_send" type="logic">
+      <obj_property name="ElementShortName">can_send</obj_property>
+      <obj_property name="ObjectShortName">can_send</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/DUT/shift" type="array">
+      <obj_property name="ElementShortName">shift[15:0]</obj_property>
+      <obj_property name="ObjectShortName">shift[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/DUT/next_shift" type="array">
+      <obj_property name="ElementShortName">next_shift[15:0]</obj_property>
+      <obj_property name="ObjectShortName">next_shift[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/DUT/data_reg" type="array">
+      <obj_property name="ElementShortName">data_reg[15:0]</obj_property>
+      <obj_property name="ObjectShortName">data_reg[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/DUT/count" type="array">
+      <obj_property name="ElementShortName">count[4:0]</obj_property>
+      <obj_property name="ObjectShortName">count[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/DUT/next_count" type="array">
+      <obj_property name="ElementShortName">next_count[4:0]</obj_property>
+      <obj_property name="ObjectShortName">next_count[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider13">
+      <obj_property name="label">Output</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/fpga_to_dac_tb/ftdif/dac_data_out" type="logic">
+      <obj_property name="ElementShortName">dac_data_out</obj_property>
+      <obj_property name="ObjectShortName">dac_data_out</obj_property>
+   </wvobject>
+</wave_config>
