@@ -1,7 +1,7 @@
 module distortion #(
     parameter XMAX = 4,     // Maximum input value (clips at ±4.0)
     parameter N = 128,      // LUT size: 128 entries
-    parameter K = 100       // Gain multiplier for distortion amount
+    parameter K = 64        // Gain multiplier for distortion amount; keep as a power of 2
 )(
     // Inputs
     input logic clk,
@@ -12,19 +12,27 @@ module distortion #(
     output logic [17:0] out
 );
 
+localparam int K_SHIFT = $clog2(K);
+
 logic [17:0] mag, mag_clip, d_out, N_new;
-logic [35:0] mult_out, pre_addr;
+logic signed [17:0] y_in_signed;
+logic signed [35:0] y_in_ext;
+logic signed [35:0] mult_out;
+logic [35:0] pre_addr;
 logic sign;
 logic [2:0] sign_pipe;  // 3-stage pipeline for sign
 logic [6:0] addr;       // 7-bit address for 128-entry LUT
 logic [17:0] out_reg;
 
-mult_gen_0 U1(
-    .CLK(clk),
-    .A(y_in),
-    .B(K),
-    .P(mult_out)
-);
+assign y_in_signed = y_in;
+assign y_in_ext = {{18{y_in_signed[17]}}, y_in_signed};
+
+always_ff @(posedge clk, negedge n_rst) begin
+    if (~n_rst)
+        mult_out <= '0;
+    else
+        mult_out <= y_in_ext <<< K_SHIFT;
+end
 
 always_comb begin
     sign = mult_out[35];

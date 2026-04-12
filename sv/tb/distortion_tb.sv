@@ -51,17 +51,17 @@ module distortion_tb ();
         // Zero
         run_test(18'd0); 
         
-        // Positive values in range (< 0.04)
-        run_test(18'd20);   // expected: tanh(0.98) = ~0.753
-        run_test(18'd41);   // expected: tanh(2.0) = ~0.964
-        run_test(18'd61);   // expected: tanh(3.0) = ~0.995
-        run_test(18'd82);   // expected: tanh(4.0) = ~0.999
+        // Positive values in range (< 0.0625)
+        run_test(18'd20);   // expected: tanh(0.625) = ~0.555
+        run_test(18'd41);   // expected: tanh(1.281) = ~0.857
+        run_test(18'd61);   // expected: tanh(1.906) = ~0.957
+        run_test(18'd82);   // expected: tanh(2.563) = ~0.988
         
-        // Negative values in range (> -0.04)
-        run_test(-18'd20);  // expected: -tanh(0.98) = ~-0.753
-        run_test(-18'd41);  // expected: -tanh(2.0) = ~-0.964
-        run_test(-18'd61);  // expected: -tanh(3.0) = ~-0.995
-        run_test(-18'd82);  // expected: -tanh(4.0) = ~-0.999
+        // Negative values in range (> -0.0625)
+        run_test(-18'd20);  // expected: -tanh(0.625) = ~-0.555
+        run_test(-18'd41);  // expected: -tanh(1.281) = ~-0.857
+        run_test(-18'd61);  // expected: -tanh(1.906) = ~-0.957
+        run_test(-18'd82);  // expected: -tanh(2.563) = ~-0.988
         
         // Out of range - positive (clipped to 4)
         run_test(18'd200);   // expected: tanh(4.0) = ~0.999 (clipped)
