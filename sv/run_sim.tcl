@@ -1,8 +1,4 @@
-# Xilinx Vivado simulator batch run script
-# This script runs the simulation to completion without GUI
-
-# Run simulation until $finish
-run all
-
-# Exit simulator
-quit
+set tb_name [lindex $argv 0]
+open_project HarmoniCore2.0.xpr
+set_property top ${tb_name}_tb [get_filesets sim_1]
+launch_simulation

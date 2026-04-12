@@ -1,14 +1,10 @@
 import librosa
 import numpy as np
-from scipy.signal import butter, lfilter, fftconvolve
-from scipy.signal import hilbert
 import soundfile as sf
-from scipy.signal import fftconvolve
 
 def load_audio(path, sr=44100):
     y, sr = librosa.load(path, sr=sr, mono=True)
     return y, sr
-
 
 def save_audio(path, y, sr):
     if np.max(np.abs(y)) > 0:
@@ -16,99 +12,139 @@ def save_audio(path, y, sr):
     
     sf.write(path, y, sr)
 
-
-#Distortion / Overdrive
-def distortion(y, amount=64):
-    return np.tanh(amount * y)
-
-# Vocoder (robot voice)
-def vocoder_robot(y, sr, carrier_freq=500):
-    t = np.arange(len(y)) / sr
-    carrier = np.sin(2 * np.pi * carrier_freq * t)
-
-    analytic = hilbert(y)
-    amplitude_envelope = np.abs(analytic)
-
-    return amplitude_envelope * carrier
-
-
-
-# Shimmer Reverb (Reverb + Octave Up)
-def shimmer_reverb(y, sr, decay=0.5):
-    ir_len = int(sr * 0.3)
-    ir = decay * np.exp(-np.linspace(0, 3, ir_len))
-    base_rev = fftconvolve(y, ir, mode='full')[:len(y)]
-    shimmer = librosa.effects.pitch_shift(y=base_rev, sr=sr, n_steps=12)
-    shimmer = shimmer[:len(y)]
-    return 0.6 * y + 0.4 * shimmer
-
-# Telephone / Radio Voice
-def telephone_voice(y, sr):
-    low = 500 / (sr / 2)
-    high = 3000 / (sr / 2)
-    b, a = butter(4, [low, high], btype='band')
-    return lfilter(b, a, y)
-
-#Chorus (multi-voice detuned delay)
-def chorus(y, sr, depth_ms=15, rate=0.3):
-    depth = int(sr * depth_ms / 1000)
-    t = np.arange(len(y))
-    lfo = depth * (1 + np.sin(2 * np.pi * rate * t / sr))  # 0 → 2*depth
-
-    y_out = np.zeros_like(y)
-
-    for i in range(len(y)):
-        d = int(lfo[i])
-        idx = i - d
-        if idx < 0:
-            y_out[i] = y[i]
-        else:
-            y_out[i] = (y[i] + y[idx]) * 0.5
-
-    return y_out
-
-
-# Ring Modulation (robot/alien tremolo)
-def ring_mod(y, sr, freq=30):
+# Ring Modulation - Original
+def ring_mod(y, sr, freq=10):
     t = np.arange(len(y)) / sr
     osc = np.sin(2 * np.pi * freq * t)
     return y * osc
 
-def echo(y, sr, delay_ms=300, feedback=0.4, mix=0.5):  #Mess with params
-    delay = int(sr * delay_ms / 1000)
-    out = np.copy(y).astype(float)
+# Ring Modulation - Frame-Based + Hardware-Conscious
+def ring_mod_hw(frames, sr, freq=10):
+    frame_length = frames.shape[0]
+    num_frames = frames.shape[1]
+    y_out = np.zeros(frame_length * num_frames)
 
-    for i in range(delay, len(y)):
-        out[i] += feedback * out[i - delay]
+    # Phase Accumulator
+    phase = 0.0
+    phase_inc = 2 * np.pi * freq / sr
 
-    return (1 - mix) * y + mix * out
+    out_idx = 0
+    for k in range(num_frames):
+        f = frames[:, k]
+        y_frame = np.zeros_like(f)
 
-def reverb(y, sr, decay=0.5, room_size=2, mix=0.4):
-    ir_len = int(sr * room_size)
-    ir = decay * np.exp(-np.linspace(0, 4, ir_len))
+        for i in range(frame_length):
+            osc = np.sin(phase)
+            phase += phase_inc
+            if phase >= 2 * np.pi:
+                phase -= 2 * np.pi
 
-    rev = fftconvolve(y, ir, mode="full")[:len(y)]
-    return (1 - mix) * y + mix * rev
+            y_frame[i] = f[i] * osc
 
-def harmonic_chorus(y, sr, depth_ms=12, rate=0.25, harmonics_amount=0.3):
-    depth = int(sr * depth_ms / 1000)
-    t = np.arange(len(y))
-    lfo = depth * (1 + np.sin(2 * np.pi * rate * t / sr))
+        y_out[out_idx:out_idx + frame_length] = y_frame
+        out_idx += frame_length
 
-    out = np.zeros_like(y)
-    for i in range(len(y)):
-        d = int(lfo[i])
-        idx = i - d
-        out[i] = (y[i] + (y[idx] if idx >= 0 else y[i])) * 0.5
+    return y_out
 
-    harm = np.tanh(2 * out) - 0.5 * np.tanh(out)
+# Ring Modulation - Actual Hardware
+phase = 0.0
+phase_inc = 13.65625 # 10 Hz at 44100 Hz sample rate
+def ring_mod_pure_hardware(sample):
+    osc = np.sin(phase)
+    phase += phase_inc
+    if phase >= 2**16:
+        phase -= 2**16
+    
+    sample_out = sample * osc
+    return sample_out
 
-    return (1 - harmonics_amount) * out + harmonics_amount * harm
+def vibrato_hw_frames(frames, sr, rate_hz=7.0, depth_ms=1.0, base_delay_ms=2.0, lut_size=256):
+    """
+    Hardware-optimized vibrato effect for frames.
+    
+    - Uses sine lookup table for LFO
+    - Circular buffer for delay line
+    - Linear interpolation for fractional delays
+    - All multiplications are by fixed constants (pre-computed)
+    - No slow operations like sin() or complex divisions
+    
+    Args:
+        frames: array of shape (frame_length, num_frames)
+        sr: sample rate
+        rate_hz: LFO frequency in Hz
+        depth_ms: depth of vibrato in milliseconds
+        base_delay_ms: base delay in milliseconds
+        lut_size: size of sine lookup table
+    
+    Returns:
+        y_out: vibrato-affected signal
+        delay_amounts: delay values for each sample (for debugging)
+    """
+    # frame_length = frames.shape[0]
+    # num_frames = frames.shape[1]
+    # total_samples = frame_length * num_frames
+    
+    # y_out = np.zeros(total_samples)
+    # delay_amounts = np.zeros(total_samples)
+    
+    # # Pre-computed constants (done once, not per-sample)
+    # sin_lut = create_sin_lut(lut_size)
+    # max_delay_samples = int((base_delay_ms + depth_ms) * sr / 1000)
+    # base_delay_samples = base_delay_ms * sr / 1000
+    # depth_samples = depth_ms * sr / 1000
+    
+    # # Phase increment for NCO (Numerically Controlled Oscillator)
+    # phase_inc = (rate_hz / sr) * lut_size
+    # phase = 0
+    
+    # # Circular delay buffer
+    # delay_buf = np.zeros(max_delay_samples + 2)
+    # buf_len = len(delay_buf)
+    # wr_ptr = 0
+    
+    # out_idx = 0
+    
+    # for k in range(num_frames):
+    #     f = frames[:, k]
+        
+    #     for i in range(frame_length):
+    #         # Write current sample to delay buffer
+    #         delay_buf[wr_ptr] = f[i]
+            
+    #         # Get LFO value from sine lookup table
+    #         phase_idx = int(phase) % lut_size
+    #         lfo = sin_lut[phase_idx]
+    #         phase += phase_inc
+    #         if phase >= lut_size:
+    #             phase -= lut_size
+            
+    #         # Calculate delay (base + depth * lfo)
+    #         # This is one multiplication with pre-computed depth_samples
+    #         delay = base_delay_samples + depth_samples * lfo
+            
+    #         # Calculate read pointer (circular)
+    #         rd_ptr = wr_ptr - delay
+    #         while rd_ptr < 0:
+    #             rd_ptr += buf_len
+            
+    #         # Linear interpolation for fractional delay
+    #         i0 = int(np.floor(rd_ptr))
+    #         i1 = (i0 + 1) % buf_len
+    #         frac = rd_ptr - i0
+    #         y_out[out_idx] = (1 - frac) * delay_buf[i0] + frac * delay_buf[i1]
+    #         delay_amounts[out_idx] = delay
+            
+    #         # Advance write pointer (circular)
+    #         wr_ptr = (wr_ptr + 1) % buf_len
+    #         out_idx += 1
+    
+    # return y_out, delay_amounts
 
-def vibrato(x, sr, depth=0.0003, rate=5.0): #Mess with params
-
+# Vibrato - Original
+def vibrato(x, sr, depth=0.001, rate=7.0):
     n = len(x)
     t = np.arange(n) / sr
+
     delay = depth * np.sin(2 * np.pi * rate * t)
     delay_samples = delay * sr
     y = np.zeros_like(x)
@@ -124,19 +160,84 @@ def vibrato(x, sr, depth=0.0003, rate=5.0): #Mess with params
         frac = idx - i0
         y[i] = (1 - frac) * x[i0] + frac * x[i1]
 
-    return y
+    return y, delay
 
+# DEPRECATED: Use vibrato_hw_frames instead
+# def vibrato_framed was removed - use vibrato_hw_frames for frame-based processing
+    
+def vibrato_hw(x, sr, rate_hz=7.0, depth_ms=1.0,base_delay_ms=2.0):
+    n = len(x)
 
+    # constants
+    max_delay = int((base_delay_ms + depth_ms) * sr / 1000) # 441 maximum number of past samples we need | delay = base_delay +- depth
+    base_delay = base_delay_ms * sr / 1000 # 0.005
+    depth = depth_ms * sr / 1000 # 220.5
+
+    # Delay buffer (RAM-based FIFO buffer))
+    delay_buf = np.zeros(max_delay + 2) # 443
+    buf_len = len(delay_buf) # 443
+    wr_ptr = 0
+
+    # Phase accumulator (NCO) (constant)
+    phase = 0.0
+    phase_inc = 2 * np.pi * rate_hz / sr # 0.0007124
+
+    y = np.zeros_like(x)
+    temp_delay = np.zeros_like(x)
+
+    # random access into past samples to create vibrato effect
+    for i in range(n):
+        delay_buf[wr_ptr] = x[i]
+
+        # LFO
+        lfo = np.sin(phase)
+        phase += phase_inc
+        if phase > 2 * np.pi:
+            phase -= 2 * np.pi
+
+        # Time-varying delay
+        delay = base_delay + depth * lfo # 220.505 const coeff * lfo
+
+        # Read pointer
+        rd_ptr = wr_ptr - delay # jumps all over the place
+        while rd_ptr < 0:
+            rd_ptr += buf_len
+
+        # Linear interpolation if rd_ptr is fractional
+        i0 = int(np.floor(rd_ptr))
+        i1 = (i0 + 1) % buf_len
+        frac = rd_ptr - i0
+        y[i] = (1 - frac) * delay_buf[i0] + frac * delay_buf[i1]
+        # y[i] = 0.5 * delay_buf[i0] + 0.5 * delay_buf[i1]
+
+        # Increment write pointer
+        wr_ptr = (wr_ptr + 1) % buf_len # this one always moves forward then wraps for new sample
+
+        # add delay amount to array
+        temp_delay[i] = delay
+
+    return y, temp_delay
 
 # ----------------------------------------------------
 # Example pipeline
 # ----------------------------------------------------
 if __name__ == '__main__':
-    y, sr = load_audio("./wav/nothingonyou.wav")
+    y, sr = load_audio("wav/original/nothingonyou.wav")
 
-    y_out = harmonic_chorus(y, sr)
-    y_out = echo(y_out, sr)
-    y_out = reverb(y_out, sr)
-    y_out = vibrato(y, sr)
+    # split up into frames to mirror hardware (1024 samples per frame)
+    frame_length = 128
+    frames = librosa.util.frame(y, frame_length=frame_length, hop_length=frame_length)
 
-    save_audio("out.wav", y_out, sr)
+    # Test hardware-optimized ring modulation
+    print("Processing ring modulation (hardware-optimized)...")
+    y_ring_hw = ring_mod_hw(frames, sr, freq=10)
+    save_audio("ring_mod_hw.wav", y_ring_hw, sr)
+    
+    # # Test hardware-optimized vibrato
+    # print("Processing vibrato (hardware-optimized)...")
+    # y_vibrato_hw, delays = vibrato_hw_frames(frames, sr, rate_hz=7.0, depth_ms=1.0, base_delay_ms=2.0)
+    # save_audio("vibrato_hw.wav", y_vibrato_hw, sr)
+    
+    print("Output files saved!")
+    print(f"Ring mod: ring_mod_hw.wav")
+    # print(f"Vibrato: vibrato_hw.wav")
