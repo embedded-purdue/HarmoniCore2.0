@@ -2,16 +2,13 @@ import os
 import numpy as np
 import soundfile as sf
 
-
-def ring_mod(y, sr, freq=30):
-    t = np.arange(len(y)) / sr
-    osc = np.sin(2 * np.pi * freq * t)
-    return y * osc
+def distortion(y, amount=100.0):
+    return np.tanh(amount * y)
 
 
 here = os.path.dirname(os.path.abspath(__file__))
 in_path = os.path.normpath(os.path.join(here, '..', 'wav', 'nothingonyou.wav'))
-out_path = os.path.normpath(os.path.join(here, '..', 'wav', 'out_ring_mod.wav'))
+out_path = os.path.normpath(os.path.join(here, '..', 'wav', 'distortion_v2.wav'))
 
 print("Input:", in_path)
 print("Output:", out_path)
@@ -24,8 +21,10 @@ except Exception as e:
     print("Failed to load input:", e)
     raise
 
-y_out = ring_mod(y, sr, freq=30)
+# Apply distortion
+y_out = distortion(y, amount=50.0)
 
+# Normalize and save
 if np.max(np.abs(y_out)) > 0:
     y_out = y_out / np.max(np.abs(y_out))
 

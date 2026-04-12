@@ -18,7 +18,7 @@ def save_audio(path, y, sr):
 
 
 #Distortion / Overdrive
-def distortion(y, amount=100):
+def distortion(y, amount=64):
     return np.tanh(amount * y)
 
 # Vocoder (robot voice)
