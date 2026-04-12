@@ -1,0 +1,12 @@
+Vivado Simulator v2025.1.0
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe -debug typical ring_mod_tb -s ring_mod_sim 
+Multi-threading is on. Using 12 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-9145] library name 'c_accum_v12_0_20' of instantiated unit conflicts with the name of another visible identifier [C:/Users/tejas/Projects/HarmoniCore2.0/sv/HarmoniCore2.0.gen/sources_1/ip/ring_mod_accum/sim/ring_mod_accum.vhd:123]
+WARNING: [VRFC 10-9145] library name 'mult_gen_v12_0_23' of instantiated unit conflicts with the name of another visible identifier [C:/Users/tejas/Projects/HarmoniCore2.0/sv/HarmoniCore2.0.gen/sources_1/ip/ring_mod_mult/sim/ring_mod_mult.vhd:119]
+ERROR: [VRFC 10-3818] variable 'phase' is driven by invalid combination of procedural drivers [C:/Users/tejas/Projects/HarmoniCore2.0/sv/src/ring_mod.sv:15]
+WARNING: [VRFC 10-2921] 'phase' driven by this always_ff block should not be driven by any other process [C:/Users/tejas/Projects/HarmoniCore2.0/sv/src/ring_mod.sv:35]
+ERROR: [XSIM 43-3322] Static elaboration of top level Verilog design unit(s) in library work failed.
