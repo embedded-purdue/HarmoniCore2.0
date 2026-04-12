@@ -22,7 +22,7 @@ module adc_to_fpga_tb;
     adc_to_fpga_if atfif();
 
     // DUT
-    adc_to_fpga DUT (.fpga_clk(fpga_clk), .adc_nrst(n_rst), .atfif(atfif));
+    adc_to_fpga DUT (.fpga_clk(fpga_clk), .n_rst(n_rst), .atfif(atfif));
 
     // test program
     adc_to_fpga_test PROG (

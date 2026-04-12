@@ -45,7 +45,7 @@ import types::*;
     // ---- Modules ----
     // MMCM/PLL
     logic sys_clk, clk_ready;
-    mmcm u_mmcm (.clk_50(dac_mclk), .clk_24_5(adc_mclk), .clk_156_buf(sys_clk), .reset(~n_rst), .locked(clk_ready), .clk_156_in(fpga_clk));
+    mmcm u_mmcm (.clk_24_5(dac_mclk), .clk_50(adc_mclk), .clk_156(sys_clk), .reset(~n_rst), .locked(clk_ready), .clk_in(fpga_clk));
 
     // ADC
     adc_to_fpga u_adc (.fpga_clk(sys_clk), .n_rst(n_rst), .atfif(atfif));

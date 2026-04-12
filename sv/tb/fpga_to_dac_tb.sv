@@ -22,7 +22,7 @@ module fpga_to_dac_tb;
     fpga_to_dac_if ftdif();
 
     // DUT
-    fpga_to_dac DUT (.fpga_clk(fpga_clk), .dac_nrst(n_rst), .ftdif(ftdif));
+    fpga_to_dac DUT (.fpga_clk(fpga_clk), .n_rst(n_rst), .ftdif(ftdif));
 
     // test program
     fpga_to_dac_test PROG (
