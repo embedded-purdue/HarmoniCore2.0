@@ -11,14 +11,6 @@ module ring_mod_tb();
     logic n_rst;
     logic valid;
     logic [17:0] sample_in;
-    logic [17:0] acc_out;
-    logic [0:0] acc_sign2;
-    logic [0:0] acc_sign1;
-    logic [0:0] acc_sign;
-    logic [17:0] phase;
-    logic [17:0] osc;
-    logic [17:0] osc_new;
-    logic [35:0] mult_out;
     logic [17:0] out;
     
     // Test tracking
@@ -31,8 +23,15 @@ module ring_mod_tb();
         forever #(CLK_PERIOD/2) clk = ~clk;
     end
     
-    // DUT instantiation
-    ring_mod DUT (.*);
+    // Connect only the functional interface so debug signals can remain
+    // internal to the DUT.
+    ring_mod DUT (
+        .clk(clk),
+        .n_rst(n_rst),
+        .sample_in(sample_in),
+        .valid(valid),
+        .out(out)
+    );
 
     task test_case(input logic [17:0] test_sample);
         valid = 1'b1;
@@ -45,7 +44,7 @@ module ring_mod_tb();
         
         // Log output to CSV file
         $fwrite(output_file, "%0d,%0d,%0d,%0d,%0d\n", 
-                sample_count, sample_in, phase, osc_new, out);
+                sample_count, sample_in, DUT.phase, DUT.osc_new, out);
         sample_count = sample_count + 1;
         
         @(posedge clk);
@@ -170,8 +169,8 @@ module ring_mod_tb();
     
     // Monitor outputs (commented out to reduce console clutter)
     // initial begin
-    //     $monitor("Time=%0t ns | valid=%b | sample_in=%h | phase=%h | osc=%h | out=%h", 
-    //              $time, valid, sample_in, phase, osc, out);
+    //     $monitor("Time=%0t ns | valid=%b | sample_in=%h | phase=%h | osc=%h | out=%h",
+    //              $time, valid, sample_in, DUT.phase, DUT.osc, out);
     // end
 
 endmodule

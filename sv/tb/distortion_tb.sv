@@ -12,8 +12,6 @@ module distortion_tb ();
 
     //outputs
     logic [17:0] out;
-    logic [17:0] test_mult; // TEST MULTIPLIER OUTPUT
-    logic [17:0] test_add;  // TEST ADDRESS OUTPUT
 
     distortion DUT (.*);
 

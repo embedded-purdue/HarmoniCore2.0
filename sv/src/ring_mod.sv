@@ -7,17 +7,18 @@ module ring_mod #(
     input logic [17:0] sample_in, 
     input logic valid,
 
-    // Debug/observation outputs
-    output logic [17:0] acc_out,
-    output logic acc_sign2,
-    output logic acc_sign1,
-    output logic acc_sign,
-    output logic [17:0] phase,
-    output logic [17:0] osc, 
-    output logic [17:0] osc_new,
-    output logic [35:0] mult_out,
+    // Output
     output logic [17:0] out
 );
+
+    logic [17:0] acc_out,
+    logic acc_sign2,
+    logic acc_sign1,
+    logic acc_sign,
+    logic [17:0] phase,
+    logic [17:0] osc, 
+    logic [17:0] osc_new,
+    logic [35:0] mult_out,
 
 ring_mod_accum U1(
     .B(acc_in),

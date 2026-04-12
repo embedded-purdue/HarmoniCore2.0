@@ -9,9 +9,7 @@ module distortion #(
     input logic [17:0] y_in, 
 
     // Output
-    output logic [17:0] out,     
-    output logic [17:0] test_mult, //TEST MULTIPLIER OUTPUT
-    output logic [17:0] test_add // TEST ADDRESS OUTPUT
+    output logic [17:0] out
 );
 
 logic [17:0] mag, mag_clip, d_out, N_new;
@@ -30,7 +28,6 @@ mult_gen_0 U1(
 
 always_comb begin
     sign = mult_out[35];
-    test_mult <= mult_out[17:0];
     mag = sign ? (~mult_out[17:0] + 1) : mult_out[17:0];
     mag_clip = mag > 8192 ? 8192 : mag;  // 4.0 in Q11 format
     N_new = N - 1;
@@ -45,7 +42,6 @@ mult_gen_0 U2(
 
 always_comb begin
     addr = pre_addr[19:13]; // addr = (mag_clip * 127) / 8192, extract 7 bits
-    test_add = addr;
 end
 
 blk_mem_gen_0 U3(
