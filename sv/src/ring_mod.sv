@@ -1,68 +1,65 @@
+`timescale 1ns / 1ps
+
 module ring_mod #(
-    parameter acc_in = 16'd27968     // Acculumator input value = 13.65625
+    parameter logic [15:0] acc_in = 16'd27968
 )(
-    // Inputs
     input logic clk,
     input logic n_rst,
-    input logic [17:0] sample_in, 
+    input logic signed [23:0] sample_in,
     input logic valid,
 
-    // Output
-    output logic [17:0] out
+    output logic signed [23:0] out
 );
 
-    logic [17:0] acc_out,
-    logic acc_sign2,
-    logic acc_sign1,
-    logic acc_sign,
-    logic [17:0] phase,
-    logic [17:0] osc, 
-    logic [17:0] osc_new,
-    logic [35:0] mult_out,
+localparam int AUDIO_W = 24;
+localparam int FRAC_W = 23;
+localparam int PHASE_W = 18;
+
+localparam logic signed [AUDIO_W-1:0] AUDIO_MAX = 24'sh7FFFFF;
+localparam logic signed [AUDIO_W-1:0] AUDIO_MIN = 24'sh800000;
+localparam logic signed [47:0] AUDIO_MAX_EXT = 48'sd8388607;
+localparam logic signed [47:0] AUDIO_MIN_EXT = -48'sd8388608;
+
+logic [PHASE_W-1:0] acc_out;
+logic [PHASE_W-1:0] phase;
+logic [5:0] lut_addr;
+logic acc_sign_lut;
+logic signed [AUDIO_W-1:0] osc;
+logic signed [AUDIO_W-1:0] osc_new;
+logic signed [47:0] mult_out;
+logic signed [47:0] scaled_out;
+logic signed [AUDIO_W-1:0] out_comb;
 
 ring_mod_accum U1(
     .B(acc_in),
-    .CLK(valid ? clk : 1'b0), // Only clock when valid is high
+    .CLK(valid ? clk : 1'b0),
     .Q(acc_out),
     .BYPASS(1'b0)
 );
 
+always_comb begin
+    phase = acc_out;
+    lut_addr = acc_out[16] ? ~acc_out[15:10] : acc_out[15:10];
+end
+
 ring_mod_lut U2(
     .clka(clk),
-    .addra(phase[16:11]), // Use the upper 7 bits of phase as address
+    .addra(lut_addr),
     .douta(osc)
 );
 
-always_comb begin
-    if (acc_out[16] == 0) begin
-        phase = acc_out;
-    end else begin
-        phase = 63 - acc_out;
-    end
-end
-
 always_ff @(posedge clk, negedge n_rst) begin
-    if (~n_rst) begin
-        acc_sign2 <= 1'b0;
-        acc_sign1 <= 1'b0;
-        acc_sign <= 1'b0;
-    end else begin 
-        acc_sign2 <= acc_out[17];
-        acc_sign1 <= acc_sign2;
-        acc_sign <= acc_sign1;
-    end
+    if (!n_rst)
+        acc_sign_lut <= 1'b0;
+    else
+        acc_sign_lut <= acc_out[17];
 end
 
 always_comb begin
-    if (~n_rst) begin
-        osc_new = 18'b0;
-    end else begin
-        if(acc_sign == 1'b1) begin
-            osc_new = ~osc + 18'd1;
-        end else begin
-            osc_new = osc;
-        end
-    end
+    if (!n_rst)
+        osc_new = '0;
+    else
+        osc_new = acc_sign_lut ? -osc : osc;
 end
 
 ring_mod_mult U3(
@@ -73,10 +70,16 @@ ring_mod_mult U3(
 );
 
 always_comb begin
-    out = mult_out[28:11]; // Take the correct 18 bits as output
+    scaled_out = mult_out >>> FRAC_W;
+
+    if (scaled_out > AUDIO_MAX_EXT)
+        out_comb = AUDIO_MAX;
+    else if (scaled_out < AUDIO_MIN_EXT)
+        out_comb = AUDIO_MIN;
+    else
+        out_comb = scaled_out[AUDIO_W-1:0];
 end
 
-// change to combinatonal logic between accum and LUT
-// change to combinational logic between LUT and mult
+assign out = out_comb;
 
 endmodule

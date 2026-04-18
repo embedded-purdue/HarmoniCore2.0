@@ -1,9 +1,9 @@
 interface ring_mod_if;
     logic clk;
     logic n_rst;
-    logic [17:0] sample_in;
+    logic signed [23:0] sample_in;
     logic valid;
-    logic [17:0] out;
+    logic signed [23:0] out;
 
     modport src_input (
         input clk,

@@ -3,8 +3,8 @@
 # SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
 # IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
 # SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
-# Start of session at: Sun Feb 22 15:08:06 2026
-# Process ID         : 18712
+# Start of session at: Sun Apr 12 13:39:44 2026
+# Process ID         : 37368
 # Current directory  : C:/Users/tejas/Projects/HarmoniCore2.0/sv
 # Command line       : vivado.exe -mode batch -source create_project.tcl
 # Log file           : C:/Users/tejas/Projects/HarmoniCore2.0/sv/vivado.log
@@ -17,14 +17,14 @@
 # CPU Physical cores : 12
 # CPU Logical cores  : 14
 # Host memory        : 33849 MB
-# Swap memory        : 11274 MB
-# Total Virtual      : 45123 MB
-# Available Virtual  : 11106 MB
+# Swap memory        : 19925 MB
+# Total Virtual      : 53774 MB
+# Available Virtual  : 3414 MB
 #-----------------------------------------------------------
 source create_project.tcl
 # set origin_dir [file normalize [file dirname [info script]]]
 # create_project HarmoniCore2.0 ./ -part xc7a25tcsg325-2 -force
-create_project: Time (s): cpu = 00:00:10 ; elapsed = 00:00:08 . Memory (MB): peak = 494.543 ; gain = 213.719
+create_project: Time (s): cpu = 00:00:08 ; elapsed = 00:00:06 . Memory (MB): peak = 493.871 ; gain = 213.594
 # set_property SIMULATOR_LANGUAGE Verilog [current_project]
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1704] No user IP repositories specified
@@ -43,6 +43,23 @@ INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'fifo'
 INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'fifo'...
 INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'fifo'...
 INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'fifo'...
+# set delay_bram [create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name blk_mem_gen_0]
+# set_property -dict [list \
+#   CONFIG.Enable_A {Always_Enabled} \
+#   CONFIG.Enable_B {Use_ENB_Pin} \
+#   CONFIG.Memory_Type {True_Dual_Port_RAM} \
+#   CONFIG.Write_Depth_A {256} \
+#   CONFIG.Write_Width_A {18} \
+# ] [get_ips blk_mem_gen_0]
+# set_property -dict { 
+#   GENERATE_SYNTH_CHECKPOINT {1}
+# } $delay_bram
+# generate_target all [get_ips blk_mem_gen_0]
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'blk_mem_gen_0'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'blk_mem_gen_0'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'blk_mem_gen_0'...
+INFO: [IP_Flow 19-1686] Generating 'Miscellaneous' target for IP 'blk_mem_gen_0'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'blk_mem_gen_0'...
 # set ring_mod_accum [create_ip -name c_accum -vendor xilinx.com -library ip -version 12.0 -module_name ring_mod_accum]
 # set_property -dict [list \
 #   CONFIG.Input_Type {Unsigned} \
@@ -64,7 +81,7 @@ INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'ring_mod_accum'..
 #   CONFIG.Load_Init_File {true} \
 #   CONFIG.Memory_Type {Single_Port_ROM} \
 #   CONFIG.Write_Depth_A {64} \
-#   CONFIG.Write_Width_A {18} \
+#   CONFIG.Write_Width_A {24} \
 # ] [get_ips ring_mod_lut]
 INFO: [IP_Flow 19-3484] Absolute path of file 'c:/Users/tejas/Projects/HarmoniCore2.0/source/sin_lut.coe' provided. It will be converted relative to IP Instance files '../../../../../source/sin_lut.coe'
 # set_property -dict { 
@@ -77,6 +94,12 @@ INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'ring_mod_lut'...
 INFO: [IP_Flow 19-1686] Generating 'Miscellaneous' target for IP 'ring_mod_lut'...
 INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'ring_mod_lut'...
 # set ring_mod_mult [create_ip -name mult_gen -vendor xilinx.com -library ip -version 12.0 -module_name ring_mod_mult]
+# set_property -dict [list \
+#   CONFIG.PortAType {Signed} \
+#   CONFIG.PortAWidth {24} \
+#   CONFIG.PortBType {Signed} \
+#   CONFIG.PortBWidth {24} \
+# ] [get_ips ring_mod_mult]
 # set_property -dict { 
 #   GENERATE_SYNTH_CHECKPOINT {1}
 # } $ring_mod_mult
@@ -85,6 +108,41 @@ INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'ring_
 INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'ring_mod_mult'...
 INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'ring_mod_mult'...
 INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'ring_mod_mult'...
+# set distortion_mult [create_ip -name mult_gen -vendor xilinx.com -library ip -version 12.0 -module_name distortion_mult]
+# set_property -dict [list \
+#   CONFIG.PortAType {Unsigned} \
+#   CONFIG.PortAWidth {26} \
+#   CONFIG.PortBType {Unsigned} \
+#   CONFIG.PortBWidth {7} \
+# ] [get_ips distortion_mult]
+# set_property -dict { 
+#   GENERATE_SYNTH_CHECKPOINT {1}
+# } $distortion_mult
+# generate_target all [get_ips distortion_mult]
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'distortion_mult'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'distortion_mult'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'distortion_mult'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'distortion_mult'...
+# set distortion_lut [create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name distortion_lut]
+# set tanh_coe_file [file normalize "$origin_dir/../source/tanh_lut.coe"]
+# set_property -dict [list \
+#   CONFIG.Coe_File $tanh_coe_file \
+#   CONFIG.Enable_A {Always_Enabled} \
+#   CONFIG.Load_Init_File {true} \
+#   CONFIG.Memory_Type {Single_Port_ROM} \
+#   CONFIG.Write_Depth_A {128} \
+#   CONFIG.Write_Width_A {24} \
+# ] [get_ips distortion_lut]
+INFO: [IP_Flow 19-3484] Absolute path of file 'c:/Users/tejas/Projects/HarmoniCore2.0/source/tanh_lut.coe' provided. It will be converted relative to IP Instance files '../../../../../source/tanh_lut.coe'
+# set_property -dict { 
+#   GENERATE_SYNTH_CHECKPOINT {1}
+# } $distortion_lut
+# generate_target all [get_ips distortion_lut]
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'distortion_lut'...
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'distortion_lut'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'distortion_lut'...
+INFO: [IP_Flow 19-1686] Generating 'Miscellaneous' target for IP 'distortion_lut'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'distortion_lut'...
 # add_files constraints.xdc
 # set_property FILE_TYPE XDC [get_files constraints.xdc]
 # set_property top AFC [current_fileset] 
@@ -95,4 +153,4 @@ INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'ring_mod_mult'...
 #         }
 #     }
 # }
-INFO: [Common 17-206] Exiting Vivado at Sun Feb 22 15:08:24 2026...
+INFO: [Common 17-206] Exiting Vivado at Sun Apr 12 13:39:59 2026...

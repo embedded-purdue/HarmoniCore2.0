@@ -1,4 +1,4 @@
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/tejas/Projects/HarmoniCore2.0/sv/HarmoniCore2.0.gen/sources_1/ip/ring_mod_lut/simulation/blk_mem_gen_v8_4.v" into library work
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/tejas/Projects/HarmoniCore2.0/sv/HarmoniCore2.0.gen/sources_1/ip/distortion_lut/simulation/blk_mem_gen_v8_4.v" into library work
 INFO: [VRFC 10-311] analyzing module STATE_LOGIC_v8_4
 INFO: [VRFC 10-311] analyzing module beh_vlog_muxf7_v8_4
 INFO: [VRFC 10-311] analyzing module beh_vlog_ff_clr_v8_4

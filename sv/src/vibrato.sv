@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module vibrato #(
     parameter int SAMPLE_W = 18,
     parameter int ADDR_W   = 8,
@@ -48,9 +50,9 @@ module vibrato #(
     // -----------------------------
     // Ring mod signals
     // -----------------------------
-    logic signed [17:0] ring_mod_out;
+    logic signed [23:0] ring_mod_out;
     logic ring_mod_valid;
-    logic signed [41:0] delay_mod_mult;   // DEPTH_Q * ring_mod_out
+    logic signed [47:0] delay_mod_mult;   // DEPTH_Q * ring_mod_out
     logic signed [PTR_W-1:0] delay_mod_q;
 
     // -----------------------------
@@ -76,15 +78,15 @@ module vibrato #(
 
     // -----------------------------
     // Ring mod instantiation
-    // For vibrato, sample_in is constant 1.0 in Q1.17
-    // so output is just the oscillator waveform in [-1, 1)
+    // For vibrato, sample_in is max-positive Q1.23
+    // so output is the oscillator waveform in [-1, 1)
     // -----------------------------
     ring_mod #(
         .acc_in(16'd27968)
     ) u_ring_mod (
         .clk      (clk),
         .n_rst    (n_rst),
-        .sample_in(18'sd131072), // 1.0 in Q1.17 = 1 << 17
+        .sample_in(24'sh7FFFFF),
         .valid    (ring_mod_valid),
         .out      (ring_mod_out)
     );
@@ -171,9 +173,9 @@ module vibrato #(
         // Convert integer write pointer to Q9.15
         wr_ptr_q = $signed({1'b0, wr_ptr, {FRAC_W{1'b0}}});
 
-        // depth_q9.15 * ring_mod_out_q1.17 -> shift right by 17 => q9.15
+        // depth_q9.15 * ring_mod_out_q1.23 -> shift right by 23 => q9.15
         delay_mod_mult = DEPTH_Q * ring_mod_out;
-        delay_mod_q    = delay_mod_mult >>> 17;
+        delay_mod_q    = delay_mod_mult >>> 23;
 
         // delay = base_delay + depth*lfo
         delay_q = BASE_DELAY_Q + delay_mod_q;

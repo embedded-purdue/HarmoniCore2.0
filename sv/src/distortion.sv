@@ -1,71 +1,75 @@
+`timescale 1ns / 1ps
+
 module distortion #(
-    parameter XMAX = 4,     // Maximum input value (clips at ±4.0)
-    parameter N = 128,      // LUT size: 128 entries
-    parameter K = 64        // Gain multiplier for distortion amount; keep as a power of 2
+    parameter int XMAX = 4,
+    parameter int N = 128,
+    parameter int K = 64
 )(
-    // Inputs
     input logic clk,
     input logic n_rst,
-    input logic [17:0] y_in, 
+    input logic signed [23:0] y_in,
 
-    // Output
-    output logic [17:0] out
+    output logic signed [23:0] out
 );
 
+localparam int AUDIO_W = 24;
+localparam int FRAC_W = 23;
+localparam int ADDR_W = $clog2(N);
 localparam int K_SHIFT = $clog2(K);
+localparam int XMAX_SHIFT = $clog2(XMAX);
+localparam int CLIP_SHIFT = FRAC_W + XMAX_SHIFT;
 
-logic [17:0] mag, mag_clip, d_out, N_new;
-logic signed [17:0] y_in_signed;
-logic signed [35:0] y_in_ext;
-logic signed [35:0] mult_out;
-logic [35:0] pre_addr;
+localparam logic [25:0] XMAX_Q = XMAX * (1 << FRAC_W);
+
+logic signed [63:0] mult_out;
+logic [63:0] mag_full;
+logic [25:0] mag_clip;
+logic [ADDR_W-1:0] addr;
+logic [ADDR_W-1:0] n_new;
+logic [32:0] pre_addr;
 logic sign;
-logic [2:0] sign_pipe;  // 3-stage pipeline for sign
-logic [6:0] addr;       // 7-bit address for 128-entry LUT
-logic [17:0] out_reg;
-
-assign y_in_signed = y_in;
-assign y_in_ext = {{18{y_in_signed[17]}}, y_in_signed};
+logic [2:0] sign_pipe;
+logic signed [AUDIO_W-1:0] d_out;
+logic signed [AUDIO_W-1:0] out_reg;
 
 always_ff @(posedge clk, negedge n_rst) begin
-    if (~n_rst)
+    if (!n_rst)
         mult_out <= '0;
     else
-        mult_out <= y_in_ext <<< K_SHIFT;
+        mult_out <= $signed(y_in) <<< K_SHIFT;
 end
 
 always_comb begin
-    sign = mult_out[35];
-    mag = sign ? (~mult_out[17:0] + 1) : mult_out[17:0];
-    mag_clip = mag > 8192 ? 8192 : mag;  // 4.0 in Q11 format
-    N_new = N - 1;
+    sign = mult_out < 0;
+    mag_full = sign ? $unsigned(-mult_out) : $unsigned(mult_out);
+    mag_clip = (mag_full > XMAX_Q) ? XMAX_Q : mag_full[25:0];
+    n_new = ADDR_W'(N - 1);
 end
 
-mult_gen_0 U2(
+distortion_mult U2(
     .CLK(clk),
     .A(mag_clip),
-    .B(N_new),
+    .B(n_new),
     .P(pre_addr)
 );
 
 always_comb begin
-    addr = pre_addr[19:13]; // addr = (mag_clip * 127) / 8192, extract 7 bits
+    addr = pre_addr[CLIP_SHIFT +: ADDR_W];
 end
 
-blk_mem_gen_0 U3(
+distortion_lut U3(
     .clka(clk),
     .addra(addr),
     .douta(d_out)
 );
 
-// Pipeline register with negative reset
 always_ff @(posedge clk, negedge n_rst) begin
-    if (~n_rst) begin
-        sign_pipe <= 3'b0;
-        out_reg <= 18'b0;
+    if (!n_rst) begin
+        sign_pipe <= '0;
+        out_reg <= '0;
     end else begin
-        sign_pipe <= {sign_pipe[1:0], sign};  // 3-cycle delay shift register
-        out_reg <= sign_pipe[2] ? ~d_out + 1 : d_out;
+        sign_pipe <= {sign_pipe[1:0], sign};
+        out_reg <= sign_pipe[2] ? -d_out : d_out;
     end
 end
 

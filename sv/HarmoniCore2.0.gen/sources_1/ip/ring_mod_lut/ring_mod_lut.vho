@@ -55,7 +55,7 @@ COMPONENT ring_mod_lut
   PORT (
     clka : IN STD_LOGIC;
     addra : IN STD_LOGIC_VECTOR(5 DOWNTO 0);
-    douta : OUT STD_LOGIC_VECTOR(17 DOWNTO 0) 
+    douta : OUT STD_LOGIC_VECTOR(23 DOWNTO 0) 
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------

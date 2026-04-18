@@ -1,2 +1,2 @@
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/tejas/Projects/HarmoniCore2.0/sv/HarmoniCore2.0.gen/sources_1/ip/ring_mod_mult/sim/ring_mod_mult.vhd" into library work
-INFO: [VRFC 10-3107] analyzing entity 'ring_mod_mult'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/tejas/Projects/HarmoniCore2.0/sv/HarmoniCore2.0.gen/sources_1/ip/distortion_mult/sim/distortion_mult.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'distortion_mult'

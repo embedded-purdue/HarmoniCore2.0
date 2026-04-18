@@ -57,7 +57,7 @@
 ring_mod_lut your_instance_name (
   .clka(clka),    // input wire clka
   .addra(addra),  // input wire [5 : 0] addra
-  .douta(douta)  // output wire [17 : 0] douta
+  .douta(douta)  // output wire [23 : 0] douta
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 

@@ -1,8 +1,8 @@
 interface distortion_if;
     logic clk;
     logic n_rst;
-    logic [17:0] y_in;
-    logic [17:0] out;
+    logic signed [23:0] y_in;
+    logic signed [23:0] out;
 
     modport src_input (
         input clk,

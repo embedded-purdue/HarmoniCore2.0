@@ -28,6 +28,29 @@ generate_target all [get_ips fifo]
 ##################################################################
 
 ##################################################################
+# CREATE IP delay_bram
+##################################################################
+
+set delay_bram [create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name blk_mem_gen_0]
+
+# User Parameters
+set_property -dict [list \
+  CONFIG.Enable_A {Always_Enabled} \
+  CONFIG.Enable_B {Use_ENB_Pin} \
+  CONFIG.Memory_Type {True_Dual_Port_RAM} \
+  CONFIG.Write_Depth_A {256} \
+  CONFIG.Write_Width_A {18} \
+] [get_ips blk_mem_gen_0]
+
+# Runtime Parameters
+set_property -dict { 
+  GENERATE_SYNTH_CHECKPOINT {1}
+} $delay_bram
+
+generate_target all [get_ips blk_mem_gen_0]
+##################################################################
+
+##################################################################
 # CREATE IP ring_mod_accum
 ##################################################################
 
@@ -62,7 +85,7 @@ set_property -dict [list \
   CONFIG.Load_Init_File {true} \
   CONFIG.Memory_Type {Single_Port_ROM} \
   CONFIG.Write_Depth_A {64} \
-  CONFIG.Write_Width_A {18} \
+  CONFIG.Write_Width_A {24} \
 ] [get_ips ring_mod_lut]
 
 # Runtime Parameters
@@ -79,12 +102,67 @@ generate_target all [get_ips ring_mod_lut]
 
 set ring_mod_mult [create_ip -name mult_gen -vendor xilinx.com -library ip -version 12.0 -module_name ring_mod_mult]
 
+# User Parameters
+set_property -dict [list \
+  CONFIG.PortAType {Signed} \
+  CONFIG.PortAWidth {24} \
+  CONFIG.PortBType {Signed} \
+  CONFIG.PortBWidth {24} \
+] [get_ips ring_mod_mult]
+
 # Runtime Parameters
 set_property -dict { 
   GENERATE_SYNTH_CHECKPOINT {1}
 } $ring_mod_mult
 
 generate_target all [get_ips ring_mod_mult]
+##################################################################
+
+##################################################################
+# CREATE IP distortion_mult
+##################################################################
+
+set distortion_mult [create_ip -name mult_gen -vendor xilinx.com -library ip -version 12.0 -module_name distortion_mult]
+
+# User Parameters
+set_property -dict [list \
+  CONFIG.PortAType {Unsigned} \
+  CONFIG.PortAWidth {26} \
+  CONFIG.PortBType {Unsigned} \
+  CONFIG.PortBWidth {7} \
+] [get_ips distortion_mult]
+
+# Runtime Parameters
+set_property -dict { 
+  GENERATE_SYNTH_CHECKPOINT {1}
+} $distortion_mult
+
+generate_target all [get_ips distortion_mult]
+##################################################################
+
+##################################################################
+# CREATE IP distortion_lut
+##################################################################
+
+set distortion_lut [create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name distortion_lut]
+
+# User Parameters
+set tanh_coe_file [file normalize "$origin_dir/../source/tanh_lut.coe"]
+set_property -dict [list \
+  CONFIG.Coe_File $tanh_coe_file \
+  CONFIG.Enable_A {Always_Enabled} \
+  CONFIG.Load_Init_File {true} \
+  CONFIG.Memory_Type {Single_Port_ROM} \
+  CONFIG.Write_Depth_A {128} \
+  CONFIG.Write_Width_A {24} \
+] [get_ips distortion_lut]
+
+# Runtime Parameters
+set_property -dict { 
+  GENERATE_SYNTH_CHECKPOINT {1}
+} $distortion_lut
+
+generate_target all [get_ips distortion_lut]
 ##################################################################
 
 

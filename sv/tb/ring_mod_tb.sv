@@ -10,8 +10,8 @@ module ring_mod_tb();
     logic clk;
     logic n_rst;
     logic valid;
-    logic [17:0] sample_in;
-    logic [17:0] out;
+    logic signed [23:0] sample_in;
+    logic signed [23:0] out;
     
     // Test tracking
     integer sample_count;
@@ -33,7 +33,7 @@ module ring_mod_tb();
         .out(out)
     );
 
-    task test_case(input logic [17:0] test_sample);
+    task test_case(input logic signed [23:0] test_sample);
         valid = 1'b1;
         sample_in = test_sample;
         @(posedge clk);
@@ -55,7 +55,7 @@ module ring_mod_tb();
         // Initialize signals
         n_rst = 1'b0;
         valid = 1'b0;
-        sample_in = 18'h00000;
+        sample_in = 24'sh000000;
         sample_count = 0;
         
         // Open output file
@@ -89,70 +89,70 @@ module ring_mod_tb();
         // Test 1: Zero input (should always output zero regardless of oscillator phase)
         $display("Test Set 1: Zero input across oscillator phases");
         repeat(10) begin
-            test_case(18'h00000);
+            test_case(24'sh000000);
         end
         
         // Test 2: Small positive amplitude across phases
-        $display("Test Set 2: Small positive input (0x04000 = 1/8 scale)");
+        $display("Test Set 2: Small positive input (0x100000 = 1/8 scale)");
         repeat(10) begin
-            test_case(18'h04000);
+            test_case(24'sh100000);
         end
         
         // Test 3: Medium positive amplitude
-        $display("Test Set 3: Medium positive input (0x10000 = 1/2 scale)");
+        $display("Test Set 3: Medium positive input (0x400000 = 1/2 scale)");
         repeat(10) begin
-            test_case(18'h10000);
+            test_case(24'sh400000);
         end
         
         // Test 4: Large positive amplitude
-        $display("Test Set 4: Large positive input (0x18000 = 3/4 scale)");
+        $display("Test Set 4: Large positive input (0x600000 = 3/4 scale)");
         repeat(10) begin
-            test_case(18'h18000);
+            test_case(24'sh600000);
         end
         
         // Test 5: Maximum positive amplitude
-        $display("Test Set 5: Max positive input (0x1FFFF)");
+        $display("Test Set 5: Max positive input (0x7FFFFF)");
         repeat(10) begin
-            test_case(18'h1FFFF);
+            test_case(24'sh7FFFFF);
         end
         
         // Test 6: Small negative amplitude
-        $display("Test Set 6: Small negative input (0x3C000 = -1/8 scale)");
+        $display("Test Set 6: Small negative input (0xF00000 = -1/8 scale)");
         repeat(10) begin
-            test_case(18'h3C000);
+            test_case(24'shF00000);
         end
         
         // Test 7: Medium negative amplitude
-        $display("Test Set 7: Medium negative input (0x30000 = -1/2 scale)");
+        $display("Test Set 7: Medium negative input (0xC00000 = -1/2 scale)");
         repeat(10) begin
-            test_case(18'h30000);
+            test_case(24'shC00000);
         end
         
         // Test 8: Large negative amplitude
-        $display("Test Set 8: Large negative input (0x28000 = -3/4 scale)");
+        $display("Test Set 8: Large negative input (0xA00000 = -3/4 scale)");
         repeat(10) begin
-            test_case(18'h28000);
+            test_case(24'shA00000);
         end
         
         // Test 9: Maximum negative amplitude
-        $display("Test Set 9: Max negative input (0x20000)");
+        $display("Test Set 9: Max negative input (0x800000)");
         repeat(10) begin
-            test_case(18'h20000);
+            test_case(24'sh800000);
         end
         
         // Test 10: Alternating pattern
         $display("Test Set 10: Alternating positive/negative");
         repeat(5) begin
-            test_case(18'h10000);
-            test_case(18'h30000);
+            test_case(24'sh400000);
+            test_case(24'shC00000);
         end
         
         // Test 11: Edge cases specifically
         $display("Test Set 11: Edge cases");
-        test_case(18'h00001);  // Minimum non-zero positive
-        test_case(18'h3FFFF);  // Minimum non-zero negative (-1)
-        test_case(18'h1FFFE);  // Max-1 positive
-        test_case(18'h20001);  // Min+1 negative
+        test_case(24'sh000001);  // Minimum non-zero positive
+        test_case(24'shFFFFFF);  // Minimum non-zero negative (-1 LSB)
+        test_case(24'sh7FFFFE);  // Max-1 positive
+        test_case(24'sh800001);  // Min+1 negative
         
         repeat(5) @(posedge clk);
         

@@ -26,6 +26,20 @@ clean:
 	xvlog ./HarmoniCore2.0.gen/sources_1/ip/ring_mod_lut/sim/ring_mod_lut.v
 	xvlog ./HarmoniCore2.0.gen/sources_1/ip/ring_mod_lut/simulation/blk_mem_gen_v8_4.v
 
+#   DELAY_BRAM
+	xvlog ./HarmoniCore2.0.gen/sources_1/ip/blk_mem_gen_0/sim/blk_mem_gen_0.v
+	xvlog ./HarmoniCore2.0.gen/sources_1/ip/blk_mem_gen_0/simulation/blk_mem_gen_v8_4.v
+
+#   DISTORTION_MULT
+	xvhdl ./HarmoniCore2.0.gen/sources_1/ip/distortion_mult/sim/distortion_mult.vhd
+
+#   DISTORTION_LUT
+	xvlog ./HarmoniCore2.0.gen/sources_1/ip/distortion_lut/sim/distortion_lut.v
+	xvlog ./HarmoniCore2.0.gen/sources_1/ip/distortion_lut/simulation/blk_mem_gen_v8_4.v
+
+	copy /Y .\HarmoniCore2.0.gen\sources_1\ip\ring_mod_lut\ring_mod_lut.mif . >NUL
+	copy /Y .\HarmoniCore2.0.gen\sources_1\ip\distortion_lut\distortion_lut.mif . >NUL
+
 	xelab -debug typical $*_tb -s $*_sim
 	xsim $*_sim -gui -view ./waves/$*_sim.wcfg
 
@@ -51,6 +65,13 @@ ring_mod_verify: ring_mod.sim
 	xvhdl ./HarmoniCore2.0.gen/sources_1/ip/ring_mod_mult/sim/ring_mod_mult.vhd
 	xvlog ./HarmoniCore2.0.gen/sources_1/ip/ring_mod_lut/sim/ring_mod_lut.v
 	xvlog ./HarmoniCore2.0.gen/sources_1/ip/ring_mod_lut/simulation/blk_mem_gen_v8_4.v
+	xvlog ./HarmoniCore2.0.gen/sources_1/ip/blk_mem_gen_0/sim/blk_mem_gen_0.v
+	xvlog ./HarmoniCore2.0.gen/sources_1/ip/blk_mem_gen_0/simulation/blk_mem_gen_v8_4.v
+	xvhdl ./HarmoniCore2.0.gen/sources_1/ip/distortion_mult/sim/distortion_mult.vhd
+	xvlog ./HarmoniCore2.0.gen/sources_1/ip/distortion_lut/sim/distortion_lut.v
+	xvlog ./HarmoniCore2.0.gen/sources_1/ip/distortion_lut/simulation/blk_mem_gen_v8_4.v
+	copy /Y .\HarmoniCore2.0.gen\sources_1\ip\ring_mod_lut\ring_mod_lut.mif . >NUL
+	copy /Y .\HarmoniCore2.0.gen\sources_1\ip\distortion_lut\distortion_lut.mif . >NUL
 	xelab -debug typical $*_tb -s $*_sim
 	xsim $*_sim -runall -nolog
 

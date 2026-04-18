@@ -56,9 +56,9 @@
 //----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
 ring_mod_mult your_instance_name (
   .CLK(CLK),  // input wire CLK
-  .A(A),      // input wire [17 : 0] A
-  .B(B),      // input wire [17 : 0] B
-  .P(P)      // output wire [35 : 0] P
+  .A(A),      // input wire [23 : 0] A
+  .B(B),      // input wire [23 : 0] B
+  .P(P)      // output wire [47 : 0] P
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 
