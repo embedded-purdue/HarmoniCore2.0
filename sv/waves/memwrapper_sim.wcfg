@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="memwrapper_sim.wdb" id="1">
+         <top_modules>
+            <top_module name="memwrapper_tb" />
+            <top_module name="types" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0 ps"></ZoomStartTime>
+      <ZoomEndTime time="13 ps"></ZoomEndTime>
+      <Cursor1Time time="0 ps"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="325"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="17" />
+   <wvobject fp_name="/memwrapper_tb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/n_rst" type="logic">
+      <obj_property name="ElementShortName">n_rst</obj_property>
+      <obj_property name="ObjectShortName">n_rst</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider3">
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/memif/wea" type="logic">
+      <obj_property name="ElementShortName">wea</obj_property>
+      <obj_property name="ObjectShortName">wea</obj_property>
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/memif/web" type="logic">
+      <obj_property name="ElementShortName">web</obj_property>
+      <obj_property name="ObjectShortName">web</obj_property>
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/memif/valid_a" type="logic">
+      <obj_property name="ElementShortName">valid_a</obj_property>
+      <obj_property name="ObjectShortName">valid_a</obj_property>
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/memif/valid_b" type="logic">
+      <obj_property name="ElementShortName">valid_b</obj_property>
+      <obj_property name="ObjectShortName">valid_b</obj_property>
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/memif/addra" type="array">
+      <obj_property name="ElementShortName">addra[7:0]</obj_property>
+      <obj_property name="ObjectShortName">addra[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/memif/addrb" type="array">
+      <obj_property name="ElementShortName">addrb[7:0]</obj_property>
+      <obj_property name="ObjectShortName">addrb[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/memif/dina" type="array">
+      <obj_property name="ElementShortName">dina[23:0]</obj_property>
+      <obj_property name="ObjectShortName">dina[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/memif/dinb" type="array">
+      <obj_property name="ElementShortName">dinb[23:0]</obj_property>
+      <obj_property name="ObjectShortName">dinb[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/memif/douta" type="array">
+      <obj_property name="ElementShortName">douta[23:0]</obj_property>
+      <obj_property name="ObjectShortName">douta[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/memif/doutb" type="array">
+      <obj_property name="ElementShortName">doutb[23:0]</obj_property>
+      <obj_property name="ObjectShortName">doutb[23:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider14">
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/PROG/pass_count" type="array">
+      <obj_property name="ElementShortName">pass_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pass_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/PROG/fail_count" type="array">
+      <obj_property name="ElementShortName">fail_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">fail_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/memwrapper_tb/test_name" type="array">
+      <obj_property name="ElementShortName">test_name[319:0]</obj_property>
+      <obj_property name="ObjectShortName">test_name[319:0]</obj_property>
+   </wvobject>
+</wave_config>

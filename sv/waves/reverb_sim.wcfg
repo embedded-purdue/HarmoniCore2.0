@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="reverb_sim.wdb" id="1">
+         <top_modules>
+            <top_module name="reverb_tb" />
+            <top_module name="types" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0 ps"></ZoomStartTime>
+      <ZoomEndTime time="9 ps"></ZoomEndTime>
+      <Cursor1Time time="0 ps"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="329"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="23" />
+   <wvobject fp_name="/reverb_tb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/n_rst" type="logic">
+      <obj_property name="ElementShortName">n_rst</obj_property>
+      <obj_property name="ObjectShortName">n_rst</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider3">
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/rvif/valid_in" type="logic">
+      <obj_property name="ElementShortName">valid_in</obj_property>
+      <obj_property name="ObjectShortName">valid_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/rvif/valid_out" type="logic">
+      <obj_property name="ElementShortName">valid_out</obj_property>
+      <obj_property name="ObjectShortName">valid_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/rvif/data_in" type="array">
+      <obj_property name="ElementShortName">data_in[23:0]</obj_property>
+      <obj_property name="ObjectShortName">data_in[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/rvif/data_out" type="array">
+      <obj_property name="ElementShortName">data_out[23:0]</obj_property>
+      <obj_property name="ObjectShortName">data_out[23:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider8">
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/count" type="array">
+      <obj_property name="ElementShortName">count[2:0]</obj_property>
+      <obj_property name="ObjectShortName">count[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/p1_x" type="array">
+      <obj_property name="ElementShortName">p1_x[23:0]</obj_property>
+      <obj_property name="ObjectShortName">p1_x[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/p2_wet" type="array">
+      <obj_property name="ElementShortName">p2_wet[23:0]</obj_property>
+      <obj_property name="ObjectShortName">p2_wet[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/comb_wr_ptr" type="array">
+      <obj_property name="ElementShortName">comb_wr_ptr[0:3][10:0]</obj_property>
+      <obj_property name="ObjectShortName">comb_wr_ptr[0:3][10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/comb_rd_addr" type="array">
+      <obj_property name="ElementShortName">comb_rd_addr[0:3][10:0]</obj_property>
+      <obj_property name="ObjectShortName">comb_rd_addr[0:3][10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/comb_wr_en" type="array">
+      <obj_property name="ElementShortName">comb_wr_en[0:3]</obj_property>
+      <obj_property name="ObjectShortName">comb_wr_en[0:3]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/comb_din" type="array">
+      <obj_property name="ElementShortName">comb_din[0:3][23:0]</obj_property>
+      <obj_property name="ObjectShortName">comb_din[0:3][23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/comb_dout" type="array">
+      <obj_property name="ElementShortName">comb_dout[0:3][23:0]</obj_property>
+      <obj_property name="ObjectShortName">comb_dout[0:3][23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/ap_wr_ptr" type="array">
+      <obj_property name="ElementShortName">ap_wr_ptr[0:1][7:0]</obj_property>
+      <obj_property name="ObjectShortName">ap_wr_ptr[0:1][7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/ap_rd_addr" type="array">
+      <obj_property name="ElementShortName">ap_rd_addr[0:1][7:0]</obj_property>
+      <obj_property name="ObjectShortName">ap_rd_addr[0:1][7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/ap_wr_en" type="array">
+      <obj_property name="ElementShortName">ap_wr_en[0:1]</obj_property>
+      <obj_property name="ObjectShortName">ap_wr_en[0:1]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/ap_din" type="array">
+      <obj_property name="ElementShortName">ap_din[0:1][23:0]</obj_property>
+      <obj_property name="ObjectShortName">ap_din[0:1][23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/ap_dout" type="array">
+      <obj_property name="ElementShortName">ap_dout[0:1][23:0]</obj_property>
+      <obj_property name="ObjectShortName">ap_dout[0:1][23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/COMB_D" type="array">
+      <obj_property name="ElementShortName">COMB_D[0:3][31:0]</obj_property>
+      <obj_property name="ObjectShortName">COMB_D[0:3][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/reverb_tb/DUT/AP_D" type="array">
+      <obj_property name="ElementShortName">AP_D[0:1][31:0]</obj_property>
+      <obj_property name="ObjectShortName">AP_D[0:1][31:0]</obj_property>
+   </wvobject>
+</wave_config>

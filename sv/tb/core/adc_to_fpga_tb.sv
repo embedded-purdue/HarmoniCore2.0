@@ -1,14 +1,14 @@
 
 `timescale 1ns / 10ps
-`include "../include/types.sv"
-`include "../include/adc_to_fpga_if.vh"
+`include "../../include/types.sv"
+`include "../../include/core/adc_to_fpga_if.vh"
 import types::*;
 
 module adc_to_fpga_tb;
     // Clock periods
-    parameter FPGA_PERIOD  = 40;    // 25MHz
-    parameter FRAME_PERIOD = 20000; // 50kHz
-    parameter BIT_PERIOD   = 625; // 50kHz * 32 bits
+    parameter FPGA_PERIOD  = 6.4;   // 156MHz
+    parameter FRAME_PERIOD = 20833; // 48kHz
+    parameter BIT_PERIOD   = 651;   // 48kHz * 32 bits = 1.536MHz
 
     logic fpga_clk  = 0;
     logic frame_clk = 0;

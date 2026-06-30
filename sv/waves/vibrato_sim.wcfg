@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="vibrato_sim.wdb" id="1">
+         <top_modules>
+            <top_module name="types" />
+            <top_module name="vibrato_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="703,938.400 ns"></ZoomStartTime>
+      <ZoomEndTime time="703,983.251 ns"></ZoomEndTime>
+      <Cursor1Time time="703,958.400 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="321"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="37" />
+   <wvobject fp_name="/vibrato_tb/PROG/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/PROG/n_rst" type="logic">
+      <obj_property name="ElementShortName">n_rst</obj_property>
+      <obj_property name="ObjectShortName">n_rst</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider43">
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/PROG/pass_count" type="array">
+      <obj_property name="ElementShortName">pass_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pass_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/PROG/fail_count" type="array">
+      <obj_property name="ElementShortName">fail_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">fail_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/vbif/valid_in" type="logic">
+      <obj_property name="ElementShortName">valid_in</obj_property>
+      <obj_property name="ObjectShortName">valid_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/vbif/valid_out" type="logic">
+      <obj_property name="ElementShortName">valid_out</obj_property>
+      <obj_property name="ObjectShortName">valid_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/vbif/data_in" type="array">
+      <obj_property name="ElementShortName">data_in[23:0]</obj_property>
+      <obj_property name="ObjectShortName">data_in[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/vbif/data_out" type="array">
+      <obj_property name="ElementShortName">data_out[23:0]</obj_property>
+      <obj_property name="ObjectShortName">data_out[23:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider51">
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/sin_lut" type="array">
+      <obj_property name="ElementShortName">sin_lut[0:63][17:0]</obj_property>
+      <obj_property name="ObjectShortName">sin_lut[0:63][17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/count" type="array">
+      <obj_property name="ElementShortName">count[2:0]</obj_property>
+      <obj_property name="ObjectShortName">count[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/wr_ptr" type="array">
+      <obj_property name="ElementShortName">wr_ptr[7:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_ptr[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/phase" type="array">
+      <obj_property name="ElementShortName">phase[31:0]</obj_property>
+      <obj_property name="ObjectShortName">phase[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/p1_sample" type="array">
+      <obj_property name="ElementShortName">p1_sample[23:0]</obj_property>
+      <obj_property name="ObjectShortName">p1_sample[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/p2_lfo" type="array">
+      <obj_property name="ElementShortName">p2_lfo[17:0]</obj_property>
+      <obj_property name="ObjectShortName">p2_lfo[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/p2_wr" type="array">
+      <obj_property name="ElementShortName">p2_wr[7:0]</obj_property>
+      <obj_property name="ObjectShortName">p2_wr[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/p3_dprod" type="array">
+      <obj_property name="ElementShortName">p3_dprod[23:0]</obj_property>
+      <obj_property name="ObjectShortName">p3_dprod[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/p3_wr" type="array">
+      <obj_property name="ElementShortName">p3_wr[7:0]</obj_property>
+      <obj_property name="ObjectShortName">p3_wr[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/p4_frac" type="array">
+      <obj_property name="ElementShortName">p4_frac[16:0]</obj_property>
+      <obj_property name="ObjectShortName">p4_frac[16:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/p4_rd0" type="array">
+      <obj_property name="ElementShortName">p4_rd0[7:0]</obj_property>
+      <obj_property name="ObjectShortName">p4_rd0[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/p4_rd1" type="array">
+      <obj_property name="ElementShortName">p4_rd1[7:0]</obj_property>
+      <obj_property name="ObjectShortName">p4_rd1[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/p5_prod0" type="array">
+      <obj_property name="ElementShortName">p5_prod0[63:0]</obj_property>
+      <obj_property name="ObjectShortName">p5_prod0[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/p5_prod1" type="array">
+      <obj_property name="ElementShortName">p5_prod1[63:0]</obj_property>
+      <obj_property name="ObjectShortName">p5_prod1[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/lfo_p8" type="array">
+      <obj_property name="ElementShortName">lfo_p8[7:0]</obj_property>
+      <obj_property name="ObjectShortName">lfo_p8[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/lfo_quad" type="array">
+      <obj_property name="ElementShortName">lfo_quad[1:0]</obj_property>
+      <obj_property name="ObjectShortName">lfo_quad[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/lfo_offs" type="array">
+      <obj_property name="ElementShortName">lfo_offs[5:0]</obj_property>
+      <obj_property name="ObjectShortName">lfo_offs[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/lfo_addr" type="array">
+      <obj_property name="ElementShortName">lfo_addr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">lfo_addr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/lfo_raw" type="array">
+      <obj_property name="ElementShortName">lfo_raw[17:0]</obj_property>
+      <obj_property name="ObjectShortName">lfo_raw[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/lfo_val" type="array">
+      <obj_property name="ElementShortName">lfo_val[17:0]</obj_property>
+      <obj_property name="ObjectShortName">lfo_val[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/delay_fixed" type="array">
+      <obj_property name="ElementShortName">delay_fixed[31:0]</obj_property>
+      <obj_property name="ObjectShortName">delay_fixed[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/delay_int" type="array">
+      <obj_property name="ElementShortName">delay_int[7:0]</obj_property>
+      <obj_property name="ObjectShortName">delay_int[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/delay_frac" type="array">
+      <obj_property name="ElementShortName">delay_frac[16:0]</obj_property>
+      <obj_property name="ObjectShortName">delay_frac[16:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/s0_ext" type="array">
+      <obj_property name="ElementShortName">s0_ext[63:0]</obj_property>
+      <obj_property name="ObjectShortName">s0_ext[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/s1_ext" type="array">
+      <obj_property name="ElementShortName">s1_ext[63:0]</obj_property>
+      <obj_property name="ObjectShortName">s1_ext[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/comp_ext" type="array">
+      <obj_property name="ElementShortName">comp_ext[63:0]</obj_property>
+      <obj_property name="ObjectShortName">comp_ext[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/vibrato_tb/DUT/frac_ext" type="array">
+      <obj_property name="ElementShortName">frac_ext[63:0]</obj_property>
+      <obj_property name="ObjectShortName">frac_ext[63:0]</obj_property>
+   </wvobject>
+</wave_config>

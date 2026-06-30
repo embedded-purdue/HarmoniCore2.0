@@ -4,13 +4,13 @@
 `ifndef FPGA_TO_DAC_IF
 `define FPGA_TO_DAC_IF
 
-`include "../include/types.sv"
+`include "../types.sv"
 import types::*;
 
 interface fpga_to_dac_if;
 
     // inputs
-    logic [DW-1:0] audio_data;
+    logic signed [DW-1:0] audio_data;
     logic audio_valid;
     logic dac_fclk, dac_bclk;
 

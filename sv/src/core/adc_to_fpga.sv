@@ -1,7 +1,7 @@
 
 `timescale 1ns / 10ps
-`include "../include/types.sv"
-`include "../include/adc_to_fpga_if.vh"
+`include "../../include/types.sv"
+`include "../../include/core/adc_to_fpga_if.vh"
 
 module adc_to_fpga
 import types::*;
@@ -33,12 +33,12 @@ import types::*;
 
     always_ff @(posedge fpga_clk, negedge n_rst) begin : FF1_TO_FF2
         if (~n_rst) ff2 <= '0;
-        else           ff2 <= ff1;
+        else        ff2 <= ff1;
     end
 
     always_ff @(posedge fpga_clk, negedge n_rst) begin : FF2_TO_FF3
         if (~n_rst) ff3 <= '0;
-        else           ff3 <= ff2;
+        else        ff3 <= ff2;
     end
 
     // rising edge detection

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="ring_mod_sim.wdb" id="1">
+         <top_modules>
+            <top_module name="ring_mod_tb" />
+            <top_module name="types" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0 ps"></ZoomStartTime>
+      <ZoomEndTime time="9 ps"></ZoomEndTime>
+      <Cursor1Time time="0 ps"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="333"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="20" />
+   <wvobject fp_name="/ring_mod_tb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/n_rst" type="logic">
+      <obj_property name="ElementShortName">n_rst</obj_property>
+      <obj_property name="ObjectShortName">n_rst</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider3">
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/rmif/data_in" type="array">
+      <obj_property name="ElementShortName">data_in[23:0]</obj_property>
+      <obj_property name="ObjectShortName">data_in[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/rmif/valid_in" type="logic">
+      <obj_property name="ElementShortName">valid_in</obj_property>
+      <obj_property name="ObjectShortName">valid_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/rmif/data_out" type="array">
+      <obj_property name="ElementShortName">data_out[23:0]</obj_property>
+      <obj_property name="ObjectShortName">data_out[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/rmif/valid_out" type="logic">
+      <obj_property name="ElementShortName">valid_out</obj_property>
+      <obj_property name="ObjectShortName">valid_out</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider8">
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/DUT/sin_lut" type="array">
+      <obj_property name="ElementShortName">sin_lut[0:63][17:0]</obj_property>
+      <obj_property name="ObjectShortName">sin_lut[0:63][17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/DUT/phase" type="array">
+      <obj_property name="ElementShortName">phase[31:0]</obj_property>
+      <obj_property name="ObjectShortName">phase[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/DUT/phase_quad" type="array">
+      <obj_property name="ElementShortName">phase_quad[1:0]</obj_property>
+      <obj_property name="ObjectShortName">phase_quad[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/DUT/phase_off" type="array">
+      <obj_property name="ElementShortName">phase_off[5:0]</obj_property>
+      <obj_property name="ObjectShortName">phase_off[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/DUT/lut_addr" type="array">
+      <obj_property name="ElementShortName">lut_addr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">lut_addr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/DUT/lut_negate" type="logic">
+      <obj_property name="ElementShortName">lut_negate</obj_property>
+      <obj_property name="ObjectShortName">lut_negate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/DUT/lut_raw" type="array">
+      <obj_property name="ElementShortName">lut_raw[17:0]</obj_property>
+      <obj_property name="ObjectShortName">lut_raw[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/DUT/carrier_s1" type="array">
+      <obj_property name="ElementShortName">carrier_s1[17:0]</obj_property>
+      <obj_property name="ObjectShortName">carrier_s1[17:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/DUT/data_s1" type="array">
+      <obj_property name="ElementShortName">data_s1[23:0]</obj_property>
+      <obj_property name="ObjectShortName">data_s1[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/DUT/valid_s1" type="logic">
+      <obj_property name="ElementShortName">valid_s1</obj_property>
+      <obj_property name="ObjectShortName">valid_s1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/DUT/product" type="array">
+      <obj_property name="ElementShortName">product[41:0]</obj_property>
+      <obj_property name="ObjectShortName">product[41:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/ring_mod_tb/DUT/scaled" type="array">
+      <obj_property name="ElementShortName">scaled[24:0]</obj_property>
+      <obj_property name="ObjectShortName">scaled[24:0]</obj_property>
+   </wvobject>
+</wave_config>

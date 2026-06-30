@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="dc_offset_sim.wdb" id="1">
+         <top_modules>
+            <top_module name="dc_offset_tb" />
+            <top_module name="types" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="88.501 ns"></ZoomEndTime>
+      <Cursor1Time time="544,390.400 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="333"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="14" />
+   <wvobject fp_name="/dc_offset_tb/fpga_clk" type="logic">
+      <obj_property name="ElementShortName">fpga_clk</obj_property>
+      <obj_property name="ObjectShortName">fpga_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/dc_offset_tb/n_rst" type="logic">
+      <obj_property name="ElementShortName">n_rst</obj_property>
+      <obj_property name="ObjectShortName">n_rst</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider14">
+   </wvobject>
+   <wvobject fp_name="/dc_offset_tb/DUT/corr_data" type="array">
+      <obj_property name="ElementShortName">corr_data[23:0]</obj_property>
+      <obj_property name="ObjectShortName">corr_data[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/dc_offset_tb/DUT/mean" type="array">
+      <obj_property name="ElementShortName">mean[23:0]</obj_property>
+      <obj_property name="ObjectShortName">mean[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/dc_offset_tb/DUT/next_mean" type="array">
+      <obj_property name="ElementShortName">next_mean[23:0]</obj_property>
+      <obj_property name="ObjectShortName">next_mean[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/dc_offset_tb/DUT/diff" type="array">
+      <obj_property name="ElementShortName">diff[24:0]</obj_property>
+      <obj_property name="ObjectShortName">diff[24:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/dc_offset_tb/DUT/temp" type="array">
+      <obj_property name="ElementShortName">temp[14:0]</obj_property>
+      <obj_property name="ObjectShortName">temp[14:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider13">
+   </wvobject>
+   <wvobject fp_name="/dc_offset_tb/dcif/adc_data" type="array">
+      <obj_property name="ElementShortName">adc_data[23:0]</obj_property>
+      <obj_property name="ObjectShortName">adc_data[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/dc_offset_tb/dcif/adc_valid" type="logic">
+      <obj_property name="ElementShortName">adc_valid</obj_property>
+      <obj_property name="ObjectShortName">adc_valid</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider12">
+   </wvobject>
+   <wvobject fp_name="/dc_offset_tb/dcif/dc_data" type="array">
+      <obj_property name="ElementShortName">dc_data[23:0]</obj_property>
+      <obj_property name="ObjectShortName">dc_data[23:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/dc_offset_tb/dcif/dc_valid" type="logic">
+      <obj_property name="ElementShortName">dc_valid</obj_property>
+      <obj_property name="ObjectShortName">dc_valid</obj_property>
+   </wvobject>
+</wave_config>

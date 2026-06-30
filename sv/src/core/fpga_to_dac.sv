@@ -1,7 +1,7 @@
 
 `timescale 1ns / 10ps
-`include "../include/types.sv"
-`include "../include/fpga_to_dac_if.vh"
+`include "../../include/types.sv"
+`include "../../include/core/fpga_to_dac_if.vh"
 
 module fpga_to_dac
 import types::*;

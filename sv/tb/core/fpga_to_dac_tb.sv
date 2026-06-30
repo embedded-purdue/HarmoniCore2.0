@@ -1,14 +1,14 @@
 
 `timescale 1ns / 10ps
-`include "../include/types.sv"
-`include "../include/fpga_to_dac_if.vh"
+`include "../../include/types.sv"
+`include "../../include/core/fpga_to_dac_if.vh"
 import types::*;
 
 module fpga_to_dac_tb;
     // Clock periods
-    parameter FPGA_PERIOD  = 40;    // 25MHz
+    parameter FPGA_PERIOD  = 6.4;   // 156MHz
     parameter FRAME_PERIOD = 20000; // 50kHz
-    parameter BIT_PERIOD   = 625; // 50kHz * 32 bits
+    parameter BIT_PERIOD   = 625;   // 50kHz * 32 bclks = 1.6MHz (standard I2S framing)
 
     logic fpga_clk  = 0;
     logic frame_clk = 0;
